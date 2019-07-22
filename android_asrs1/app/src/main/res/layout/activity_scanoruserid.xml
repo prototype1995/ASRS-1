@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/two">
+
+    <Button
+        android:id="@+id/button5"
+        style="@style/ButtonBorder.Accent"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="162dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="131dp"
+        android:text="@string/scan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="scan qr code" />
+
+    <Button
+        android:id="@+id/button6"
+        style="@style/ButtonBorder.Accent"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="162dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="131dp"
+        android:text="@string/user_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button5"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="enter user id" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="65dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="616dp"
+        android:layout_marginTop="321dp"
+        android:contentDescription="@string/client_logo6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/clientlogo" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="320dp"
+        android:contentDescription="@string/bas3d_scanoruserid"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/icon" />
+
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="324dp"
+        android:layout_marginEnd="655dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:tooltipText="Logout"
+        app:layout_constraintBottom_toTopOf="@+id/imageView13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/logout"
+        android:contentDescription="@string/logout4"
+        tools:targetApi="o" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

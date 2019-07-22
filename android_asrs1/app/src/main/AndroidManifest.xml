@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools" package="com.bas3d.asrs1">
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <application
+            android:allowBackup="true"
+            android:icon="@drawable/appicon"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".HomeActivity" android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".SandRActivity" android:screenOrientation="landscape" />
+
+        <activity android:name=".InsertActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".DisplayActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".PrintActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".ScanORuseridActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".EnteruseridActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".SmsActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".RetrieveActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".ThankuActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".DisplayrActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".ThankuRActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".CaptureActivity" android:screenOrientation="landscape"/>
+
+
+
+    </application>
+
+</manifest>

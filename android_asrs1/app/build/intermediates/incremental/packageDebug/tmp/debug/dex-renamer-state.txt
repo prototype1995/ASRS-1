@@ -1,0 +1,4 @@
+#Fri Jul 19 12:37:33 IST 2019
+base.0=C\:\\Users\\DELL INDIA\\AndroidStudioProjects\\ASRS1\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out
+path.0=classes.dex
+renamed.0=classes.dex

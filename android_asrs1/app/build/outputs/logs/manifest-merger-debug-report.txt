@@ -1,0 +1,320 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\e4bc97bb53ceb4c2a564d395c9cbea22\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-ktx:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\27a6633442721a93bf3a63cfc6405f37\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04201354aaab83d8ecb2ae78c7019828\AndroidManifest.xml:2:1-11:12
+MERGED from [pl.droidsonroids.gif:android-gif-drawable:1.2.3] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\1a9ff22d186ed35e0a8569278fd10c38\AndroidManifest.xml:2:1-11:12
+MERGED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:17:1-56:12
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\6b8ea948de8c3b227f61e708ff2971e5\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\02e53b1284370cf64cac701cd0a20408\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a99611f21d776d2c892dc8c9606ed458\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\d466fe8d8f8faa98e86d5a3d2e5578e3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a61e8dec2645ac8a940ee07863948e06\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\0e50a267932e3e67a12844044644e290\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\4b5d2f3f8f3b6b920ee9be0154ec4d61\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\ed1eb1046c2a3db31d314bedad0c5cb0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media:media:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\40a76cdb8ebe415fc35be572e57d2e41\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\dee5a382869f1ff0c882a4f493930346\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\8fdebf80e459df68b7458cb38c40809d\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\8e5b24d3dd3d27451707f8cb7e406370\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\db98268ede71edd314aefe0285491f2b\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\56c5c90f1c1189a5d0e159bea7a88717\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\e3dab1d31111872f45dee8669c8518c8\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\f9460d6ee642f71e2e38b1b1bf84e41b\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04ca9277f968556bbd58bd1d7fb7111c\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\581763a64972683dad771bfa94ac07e4\AndroidManifest.xml:17:1-25:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\aa4050f1a1bbf8357d60c578c1aeb045\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\475195201dfc2861d063a9fb0966d797\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\1c36dbfcc357bf0d27885f813fc25287\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\9ede7f7a61046df1df033b35dba70522\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\58c311d8a2aff6e1a113e6bee270b04f\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a88857d2c2360eaf9afcc4ebd8d1f082\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\26a5ebe2fb278afadb99de08cd4a3e60\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\57878ce137f3685772269bd8a2bf24ef\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\deb0c85a64bef86260d94189118aac1e\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\045f3eda151ed9762176d54f542c8c69\AndroidManifest.xml:17:1-22:12
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+	package
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:3:58-83
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:3:11-57
+	android:versionCode
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:1-51:12
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.SEND_SMS
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:4:5-66
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:4:22-64
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:5:5-66
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:5:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:6:5-78
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:6:22-76
+application
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:8:5-49:19
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04201354aaab83d8ecb2ae78c7019828\AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04201354aaab83d8ecb2ae78c7019828\AndroidManifest.xml:9:5-20
+MERGED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:46:5-54:19
+MERGED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:46:5-54:19
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\6b8ea948de8c3b227f61e708ff2971e5\AndroidManifest.xml:9:5-20
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\6b8ea948de8c3b227f61e708ff2971e5\AndroidManifest.xml:9:5-20
+MERGED from [androidx.core:core:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04ca9277f968556bbd58bd1d7fb7111c\AndroidManifest.xml:22:5-89
+MERGED from [androidx.core:core:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04ca9277f968556bbd58bd1d7fb7111c\AndroidManifest.xml:22:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\581763a64972683dad771bfa94ac07e4\AndroidManifest.xml:22:5-23:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\581763a64972683dad771bfa94ac07e4\AndroidManifest.xml:22:5-23:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04ca9277f968556bbd58bd1d7fb7111c\AndroidManifest.xml:22:18-86
+	android:supportsRtl
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:13:13-39
+	android:label
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:11:13-45
+	tools:ignore
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:15:13-64
+	android:roundIcon
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:12:13-58
+	android:icon
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:10:13-45
+	android:allowBackup
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:9:13-39
+	android:theme
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:14:13-44
+activity#com.bas3d.asrs1.HomeActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:16:9-22:20
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:16:48-85
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:16:19-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:17:13-21:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:18:17-68
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:18:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:20:17-76
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:20:27-74
+activity#com.bas3d.asrs1.SandRActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:23:9-89
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:23:49-86
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:23:19-48
+activity#com.bas3d.asrs1.InsertActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:25:9-89
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:25:50-87
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:25:19-49
+activity#com.bas3d.asrs1.DisplayActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:27:9-90
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:27:51-88
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:27:19-50
+activity#com.bas3d.asrs1.PrintActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:29:9-88
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:29:49-86
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:29:19-48
+activity#com.bas3d.asrs1.ScanORuseridActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:31:9-95
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:31:56-93
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:31:19-55
+activity#com.bas3d.asrs1.EnteruseridActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:33:9-94
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:33:55-92
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:33:19-54
+activity#com.bas3d.asrs1.SmsActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:35:9-86
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:35:47-84
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:35:19-46
+activity#com.bas3d.asrs1.RetrieveActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:37:9-91
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:37:52-89
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:37:19-51
+activity#com.bas3d.asrs1.ThankuActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:39:9-89
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:39:50-87
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:39:19-49
+activity#com.bas3d.asrs1.DisplayrActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:41:9-91
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:41:52-89
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:41:19-51
+activity#com.bas3d.asrs1.ThankuRActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:43:9-90
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:43:51-88
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:43:19-50
+activity#com.bas3d.asrs1.CaptureActivity
+ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:45:9-90
+	android:screenOrientation
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:45:51-88
+	android:name
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml:45:19-50
+uses-sdk
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\e4bc97bb53ceb4c2a564d395c9cbea22\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\e4bc97bb53ceb4c2a564d395c9cbea22\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\27a6633442721a93bf3a63cfc6405f37\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\27a6633442721a93bf3a63cfc6405f37\AndroidManifest.xml:5:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04201354aaab83d8ecb2ae78c7019828\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04201354aaab83d8ecb2ae78c7019828\AndroidManifest.xml:5:5-7:41
+MERGED from [pl.droidsonroids.gif:android-gif-drawable:1.2.3] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\1a9ff22d186ed35e0a8569278fd10c38\AndroidManifest.xml:7:5-9:41
+MERGED from [pl.droidsonroids.gif:android-gif-drawable:1.2.3] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\1a9ff22d186ed35e0a8569278fd10c38\AndroidManifest.xml:7:5-9:41
+MERGED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:20:5-44
+MERGED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:20:5-44
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\6b8ea948de8c3b227f61e708ff2971e5\AndroidManifest.xml:7:5-43
+MERGED from [com.android.volley:volley:1.1.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\6b8ea948de8c3b227f61e708ff2971e5\AndroidManifest.xml:7:5-43
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\02e53b1284370cf64cac701cd0a20408\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\02e53b1284370cf64cac701cd0a20408\AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a99611f21d776d2c892dc8c9606ed458\AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a99611f21d776d2c892dc8c9606ed458\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\d466fe8d8f8faa98e86d5a3d2e5578e3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\d466fe8d8f8faa98e86d5a3d2e5578e3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a61e8dec2645ac8a940ee07863948e06\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a61e8dec2645ac8a940ee07863948e06\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\0e50a267932e3e67a12844044644e290\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\0e50a267932e3e67a12844044644e290\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\4b5d2f3f8f3b6b920ee9be0154ec4d61\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\4b5d2f3f8f3b6b920ee9be0154ec4d61\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\ed1eb1046c2a3db31d314bedad0c5cb0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\ed1eb1046c2a3db31d314bedad0c5cb0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\40a76cdb8ebe415fc35be572e57d2e41\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\40a76cdb8ebe415fc35be572e57d2e41\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\dee5a382869f1ff0c882a4f493930346\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\dee5a382869f1ff0c882a4f493930346\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\8fdebf80e459df68b7458cb38c40809d\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\8fdebf80e459df68b7458cb38c40809d\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\8e5b24d3dd3d27451707f8cb7e406370\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\8e5b24d3dd3d27451707f8cb7e406370\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\db98268ede71edd314aefe0285491f2b\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\db98268ede71edd314aefe0285491f2b\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\56c5c90f1c1189a5d0e159bea7a88717\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\56c5c90f1c1189a5d0e159bea7a88717\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\e3dab1d31111872f45dee8669c8518c8\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\e3dab1d31111872f45dee8669c8518c8\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\f9460d6ee642f71e2e38b1b1bf84e41b\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\f9460d6ee642f71e2e38b1b1bf84e41b\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04ca9277f968556bbd58bd1d7fb7111c\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.2] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\04ca9277f968556bbd58bd1d7fb7111c\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\581763a64972683dad771bfa94ac07e4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\581763a64972683dad771bfa94ac07e4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\aa4050f1a1bbf8357d60c578c1aeb045\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\aa4050f1a1bbf8357d60c578c1aeb045\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\475195201dfc2861d063a9fb0966d797\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\475195201dfc2861d063a9fb0966d797\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\1c36dbfcc357bf0d27885f813fc25287\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\1c36dbfcc357bf0d27885f813fc25287\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\9ede7f7a61046df1df033b35dba70522\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\9ede7f7a61046df1df033b35dba70522\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\58c311d8a2aff6e1a113e6bee270b04f\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\58c311d8a2aff6e1a113e6bee270b04f\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a88857d2c2360eaf9afcc4ebd8d1f082\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\a88857d2c2360eaf9afcc4ebd8d1f082\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\26a5ebe2fb278afadb99de08cd4a3e60\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\26a5ebe2fb278afadb99de08cd4a3e60\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\57878ce137f3685772269bd8a2bf24ef\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\57878ce137f3685772269bd8a2bf24ef\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\deb0c85a64bef86260d94189118aac1e\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\deb0c85a64bef86260d94189118aac1e\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\045f3eda151ed9762176d54f542c8c69\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\045f3eda151ed9762176d54f542c8c69\AndroidManifest.xml:20:5-44
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\DELL INDIA\AndroidStudioProjects\ASRS1\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.CAMERA
+ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:22:5-65
+	android:name
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:22:22-62
+uses-feature#android.hardware.camera
+ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:25:5-27:36
+	android:required
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:27:9-33
+	android:name
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:26:9-47
+uses-feature#android.hardware.camera.front
+ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:28:5-30:36
+	android:required
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:30:9-33
+	android:name
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:29:9-53
+uses-feature#android.hardware.camera.autofocus
+ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:33:5-35:36
+	android:required
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:35:9-33
+	android:name
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:34:9-57
+uses-feature#android.hardware.camera.flash
+ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:36:5-38:36
+	android:required
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:38:9-33
+	android:name
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:37:9-53
+uses-feature#android.hardware.screen.landscape
+ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:39:5-41:36
+	android:required
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:41:9-33
+	android:name
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:40:9-57
+uses-feature#android.hardware.wifi
+ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:42:5-44:36
+	android:required
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:44:9-33
+	android:name
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:43:9-45
+activity#com.journeyapps.barcodescanner.CaptureActivity
+ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:47:9-53:63
+	android:screenOrientation
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:50:13-56
+	android:clearTaskOnLaunch
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:49:13-45
+	android:stateNotNeeded
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:51:13-42
+	android:windowSoftInputMode
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:53:13-60
+	android:theme
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:52:13-54
+	android:name
+		ADDED from [com.journeyapps:zxing-android-embedded:3.6.0] C:\Users\DELL INDIA\.gradle\caches\transforms-2\files-2.1\5bb93686ddfb45fe0bde2907fc0efa82\AndroidManifest.xml:48:13-74
