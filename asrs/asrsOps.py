@@ -1,0 +1,333 @@
+#Module containing higher level operations of the ASRS
+
+import logging
+logger = logging.getLogger(__name__)
+
+import RPi.GPIO as GPIO
+import configparser
+import os
+import psutil
+import platform
+import datetime
+import time
+import json
+
+from asrs import asrsMotor
+from asrs import asrsDB
+from asrs import asrsSlots
+from asrs import asrsOCR
+from asrs import asrsQRcode as qr
+
+from shutil import copyfile
+
+
+
+config_file = "asrsConfig.conf"
+config = configparser.ConfigParser()
+config.read(config_file)
+
+#card detection pin declarations
+card_limit_pin = 36
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(card_limit_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+db = asrsDB.ASRSDataBase()
+logger.info("db created...")
+
+#Create actuator objects
+m1 = asrsMotor.StepperMotor(step_pin=config.getint('STEPPERMOTOR', 'M1_STEP_PIN'),
+                            dir_pin=config.getint('STEPPERMOTOR', 'M1_DIR_PIN'),
+                            limit_pin=config.getint('STEPPERMOTOR', 'M1_LIM_PIN'),
+                            step_angle=config.getfloat('STEPPERMOTOR', 'M1_STEP_ANGLE'),
+                            stepping = 16,
+                            delay=0.00001, res=0.01)
+
+logger.info("m1 created...")
+m2 = asrsMotor.StepperMotor(step_pin=config.getint('STEPPERMOTOR', 'M2_STEP_PIN'),
+                            dir_pin=config.getint('STEPPERMOTOR', 'M2_DIR_PIN'),
+                            limit_pin=config.getint('STEPPERMOTOR', 'M2_LIM_PIN'),
+                            step_angle=config.getfloat('STEPPERMOTOR', 'M2_STEP_ANGLE'),
+                            stepping = 16,
+                            delay=0.00001, res=1)
+logger.info("m2 created...")
+
+s1 = asrsMotor.Solenoid(in1_pin=config.getint('SOLENOID', 'S1_PIN'))
+logger.info("s1 created...")
+
+logger.debug("Reading Offsets from config file")
+
+offset_storage = config.getfloat('SLOTS', 'offset_storage')
+offset_retrieval = config.getfloat('SLOTS', 'offset_retrieval')
+cardTray_pitch = config.getfloat('SLOTS', 'cardTray_pitch')
+
+logger.info("Intial Homing axes...")
+
+m2.go_home(delay=0.0001)
+m1.go_home(delay=0.0001)
+logger.info("Initial Homing axes complete.")
+
+ocr = asrsOCR.OCR()
+slot = asrsSlots.Slot((0, '', 0, '', ''))
+
+
+#### Storage && Retrieval position list
+storage_list = [1.5, 2.1, 2.8, 3.5, 4.1, 4.7, 5.3, 6, 6.5, 7.1, 7.7, 8.4, 9, 9.6, 10.2, 10.9, 11.6, 12.2, 12.7, 13.4, 14.1, 14.75, 15.35, 15.95, 16.65, 17.25, 17.95, 18.55, 19.2, 19.7, 20.2, 20.9, 21.50]
+retrieval_list = [8.2, 8.8, 9.4, 10.1, 10.8, 11.4, 12, 12.6, 13.2, 13.8, 14.5, 15.1, 15.7, 16.3, 16.9, 17.5, 18.1, 18.8, 19.4, 20, 20.65, 21.3, 21.9, 22.55, 23.22, 23.87, 24.52, 25.12, 25.72, 26.32, 26.92, 27.55, 28.2] 
+
+def move_to_slot(pos=0, storage=True):
+    """Move the storage rack to the specified position
+
+    Args: int pos - default 0
+          boolean storage - defualt True - determines weather storing or retrieving
+                                    False - retrieval
+    Returns: None
+    """
+    logger.debug("offsets & pitch ({}, {}, {}) ".format(offset_storage, offset_retrieval, cardTray_pitch))
+    global storage_list
+    global retrieval_list
+
+    if storage:
+        # move slot no. given by pos to storage operation
+        rev = storage_list[pos]
+        logger.info("Moving to slot {} for storage: abs_pos = {}deg".format(pos, rev))
+    else:
+        # move slot no. given by pos to retrieval operation
+        rev = retrieval_list[pos]
+        logger.info("Moving to slot {} for retrieval: abs_pos = {}deg".format(pos, rev))
+
+    m1.drive_motor(revolutions = rev, direction = 1, delay = 0.00001)
+    return rev
+
+
+def init_storage_seq():
+    """
+    Method to intialize storage sequence
+    """
+    logger.debug("init_storage_seq() called...")
+    slot.slot_id = db.get_empty_slot()
+    rev = move_to_slot(slot.slot_id, storage=True)
+    content = '''{{ "cmd": "{}",
+                    "revolutions": "{}",
+                    "pos": "{}"}}'''.format("init_storage_seq()", rev, slot.slot_id)
+    logger.debug(content)
+    return(True, bytes(content, "UTF-8"))
+
+
+def init_image_proc():
+    """
+    Method to initialize image processing sequence
+    """
+    logger.debug("init_image_proc() method called.")
+    slot.set_datetime_in()
+    logger.info("Capturing image of side 1...")
+    ocr.capture_photo(slot.get_image_filename(side=1))
+    copyfile(slot.get_image_filename(side=1), "IDCARD1.JPG")
+
+    logger.info("Capturing image of side 2...")
+    ocr.capture_usb_photo(slot.get_image_filename(side=2))
+    copyfile(slot.get_image_filename(side=2), "IDCARD2.JPG")
+
+
+    logger.info("Performing OCR [unimplemented]...")
+    slot.ocr_info = ocr.image_to_text()
+
+    logger.info("Generating QRcode.")
+    slot.gen_uid()
+    qr.generate_qrcode(slot.uid)
+
+    content = '''{{ "cmd": "{}",
+                    "slot": "{}"}}'''.format("init_image_proc()", slot.get_tuple())
+    logger.debug(content)
+    return(True, bytes(content, "UTF-8"))
+
+
+
+
+def confirm_storage(print=False):
+    logger.debug("confirm_storage() called...")
+    s1.fire_solenoid(2)
+    logger.info("Updating slot object.")
+    slot.status = 1
+    db.update_current(slot)
+    if print:
+        qr.print_qr_code(slot.uid)
+        cmd = "confirm_storage(print=True)"
+    else:
+        cmd = "confirm_storage(print=False)"
+    m1.go_home(delay=0.00001) # moving back to home position.
+    logger.info("Returning to home position... [OBSOLETE]")
+    logger.info("Homing complete.")
+    content = '''{{ "cmd": "{}",
+                    "slot": "{}"}}'''.format(cmd, slot.get_tuple())
+    logger.debug(content)
+    return(True, bytes(content, "UTF-8"))
+
+def confirm_retrieval():
+    logger.debug("confirm_retrieval() called...")
+    move_to_slot(pos=slot.slot_id, storage=False)
+    db.delete_from_current(slot)
+    reset_slot = asrsSlots.Slot((slot.slot_id, '', 0, '', ''))
+    db.insert_to_current(reset_slot)
+    logger.debug("Retireval...")
+    m2.drive_motor(revolutions=98, direction=1)
+    m2.go_home()
+    #db.update_slot_status(slot.slot_id, 1)
+    content = '''{{ "cmd": "{}",
+                    "slot": "{}"}}'''.format("confirm_retrieval()", slot.get_tuple())
+    logger.debug(content)
+    return(True, bytes(content, "UTF-8"))
+
+def purge_all_cards():
+    logger.debug("Purging all cards...")
+    # print("Homing...")
+    #
+    # no_of_slots = 3
+    # ser.write(bytes("home_DCMOTOR,0,0,0;","UTF-8"))
+    # check_serial()
+    # ser.write(bytes("home_STEPPERMOTOR, 0, 0, 0;","UTF-8"))
+    # check_serial()
+    #
+    # move_to_slot(0,9.2)
+    # for slot_num in range(no_of_slots):
+    #
+    #     move_to_slot(slot_num, offset=0)
+    #     ser.write(bytes("drive_DCMOTOR,3,1,0;","UTF-8"))
+    #     check_serial()
+    #
+    #     ser.write(bytes("home_DCMOTOR, 0, 0, 0;","UTF-8"))
+    #     check_serial()
+    #
+    # print("Deleting db...")
+    # os.remove("ASRS_records.db")
+
+    content = '''{{"cmd":"{}"
+                    "slot": "{}"}}'''.format("purge_all_cards()", slot.get_tuple())
+    return(True, bytes(content, "UTF-8"))
+
+
+def detect_card(card_limit_pin=36):
+    """
+    Method for card detection.
+    """
+    logger.debug("detect_card() called...")
+    while not GPIO.input(card_limit_pin):
+        return(False,bytes("False","UTF-8"))
+    while GPIO.input(card_limit_pin):
+        return(True,bytes("True","UTF-8"))
+
+def push_card():
+    logger.info("Push Card...")
+    m2.drive_motor(revolutions=98,direction=1)
+    m2.go_home()
+    content = '''{{"cmd":"{}"
+                   "slot":"{}"}}'''.format("push_card()",slot.get_tuple())
+    return(True, bytes(content, "UTF-8"))
+
+def print_test():
+    logger.info("Printer testing...")
+    qr.printer_check_routine()
+    content = '''{{"cmd":"{}"
+                   "slot":"{}"'''.format("print_test()",slot.get_tuple())
+    return(True, bytes(content, "UTF-8"))
+
+def solenoid_test():
+    logger.info("Testing Solenoid...")
+    s1.fire_solenoid(2)
+    content = '''{{ "cmd": "{}",
+                    "slot": "{}"}}'''.format("solenoid_test()", slot.get_tuple())
+    return(True, bytes(content, "UTF-8"))
+
+def stepperMotor_test():
+    logger.info("Testing carousel motor...")
+    m1.drive_motor(revolutions = 1, direction= 1)
+    m1.go_home()
+    content = '''{{ "cmd": "{}",
+                    "slot": "{}"}}'''.format("stepperMotor_test()", slot.get_tuple())
+    return(True, bytes(content, "UTF-8"))
+
+def piCamera_test():
+    logger.info("Testing PiCam...[file-name : piCam_test_image.jpg]")
+    ocr.capture_photo("piCam_test_image.jpg")
+    try:
+        with open("piCam_test_image.jpg", 'rb') as file:
+            return(True, file.read())
+    except:
+        return(False, "")
+
+def usbCamera_test():
+    logger.info("Testing USB Cam...[file-name : usbCam_test_image.jpg]")
+    ocr.capture_usb_photo("usbCam_test_image.jpg")
+    try:
+        with open("usbCam_test_image.jpg", 'rb') as file:
+            return(True, file.read())
+    except:
+        return(False, "")
+
+def go_home():
+    logger.info("Homing... [OBSOLETE]")
+    #m1.go_home()
+    #m2.go_home()
+
+    content = '''{{ "cmd": "{}",
+                    "slot": "{}"}}'''.format("go_home()", slot.get_tuple())
+    return(True, bytes(content, "UTF-8"))
+
+def auto_home():
+    logger.info("Auto Homing...")
+    m2.go_home()
+    m1.go_home()
+    content = '''{{ "cmd": "{}",
+                    "slot": "{}"}}'''.format("auto_home()", slot.get_tuple())
+    return(True, bytes(content, "UTF-8"))
+
+def pusher_go_home():
+    m2.go_home()
+    content = ""
+    return(True, bytes(content,"UTF-8"))
+
+def stepper_go_home():
+    m1.go_home()
+    content = ""
+    return(True, bytes(content, "UTF-8"))
+
+### Written for admin dashboard.
+
+def cpu_usage():
+    logger.debug("cpu_usage() called...")
+    cpu_usage = psutil.cpu_percent()
+    content = '''{{ "cmd": "{}",
+                    "cpu": "{}"}}'''.format("cpuUsage()", cpu_usage)
+    return(True, bytes(content,"UTF-8"))
+
+def mem_usage():
+    logger.debug("mem_usage() called...")
+    mem_info = "Total memory : " + str(psutil.virtual_memory()[0]) + " >> Used Memory : " + str(psutil.virtual_memory()[3])
+    content = '''{{ "cmd": "{}",
+                    "mem": "{}"}}'''.format("memoryUsage()", mem_info)
+    return(True, bytes(content, "UTF-8"))
+
+def system_status():
+    """
+    Method to display the Disk usage, CPU usage and Memory usage.
+    """
+    logger.debug("system_status() called...")
+    cpu_percent = psutil.cpu_percent()
+    memory_percent = psutil.virtual_memory()[2]
+    disk_percent = psutil.disk_usage('/')[3]
+    content = '''{{ "cmd": "{}",
+                    "mem": "{}",
+                    "cpu": "{}",
+                    "disk":"{}"}}'''.format("system_status()", memory_percent, cpu_percent, disk_percent)
+    return(True, bytes(content, "UTF-8"))
+
+def list_all_curr_users():
+    """
+    Method to list all current users
+    Args: None
+    Returns: json
+    """
+    d = db.get_all_curr_users()
+    content = json.dumps(d)
+    return(True, bytes(content, "UTF-8"))
+
+
