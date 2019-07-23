@@ -149,6 +149,7 @@ def confirm_storage(print=False):
     logger.info("Updating slot object.")
     slot.status = 1
     db.update_current(slot)
+    db.insert_to_records(slot)
     if print:
         qr.print_qr_code(slot.uid)
         cmd = "confirm_storage(print=True)"
@@ -164,6 +165,8 @@ def confirm_storage(print=False):
 
 def confirm_retrieval():
     logger.debug("confirm_retrieval() called...")
+    logger.info("Updating Date-time out in Records")
+    db.update_rec_datetimeout(slot.get_datetime(), slot.uid)
     move_to_slot(pos=slot.slot_id, storage=False)
     db.delete_from_current(slot)
     reset_slot = asrsSlots.Slot((slot.slot_id, '', 0, '', ''))

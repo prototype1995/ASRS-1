@@ -30,7 +30,7 @@ class OCR:
         Use USB_cam to capture a photo.
         """
         self.image_filename = image_filename
-        os.system('fswebcam -d /dev/video1 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+        os.system('fswebcam -d /dev/video2 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
 
 
     def image_to_text(self):

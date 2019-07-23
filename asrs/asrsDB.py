@@ -184,6 +184,24 @@ class ASRSDataBase:
         self.__c.execute('INSERT INTO records(uid, datetime_in, datetime_out, ocr_info) VALUES (?, ?, ?, ?)', t)
         self.__conn.commit()
 
+
+    def update_rec_datetimeout(self, date_out, UID):
+        """
+        Updates the date-time out on retrieval
+        """
+        self.__c.execute('''UPDATE records
+                            SET datetime_out = ?
+                            WHERE uid = ?''',(date_out,UID,))
+        self.__conn.commit()
+
+    def return_date_out(self, UID):
+        """
+        Returns date-time-out of the given UID.
+        """
+        date_time_out = self.__c.execute('SELECT datetime_out FROM records WHERE uid = ?', (UID,)).fetchone()
+        return date_time_out[0]
+
+
     def update_current(self, s):
         """
         Updates current table with new members of slot
@@ -215,5 +233,4 @@ class ASRSDataBase:
         d = {}
         for slot_id, uid in current_users.fetchall():
             d[slot_id] = uid
-
         return d
