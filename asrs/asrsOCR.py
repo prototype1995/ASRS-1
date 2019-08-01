@@ -17,20 +17,39 @@ class OCR:
     """
     def capture_photo(self, image_filename):
         """
-        Use picamera to capture a photo
+        Use USB-Camera-1 to capture a photo
 
         Args: int side
         Returns: None
         """
         self.image_filename = image_filename
-        os.system('fswebcam -d /dev/video0 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+        try:
+            try:
+                os.system('fswebcam -d /dev/video0 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+                logger.info("Capturing image with /dev/video0.")
+            except:
+                os.system('fswebcam -d /dev/video1 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+                logger.info("Skipped /dev/video0...trying to capture image with /dev/video1.")
+        except:
+            print("Camera not detected... Check camera connection")
+            logger.warning("Camera not detected")
+
 
     def capture_usb_photo(self, image_filename):
         """
-        Use USB_cam to capture a photo.
+        Use USB_Camera-2 to capture a photo.
         """
         self.image_filename = image_filename
-        os.system('fswebcam -d /dev/video2 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+        try:
+            try:
+                os.system('fswebcam -d /dev/video2 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+                logger.info("Capturing image with /dev/video2.")
+            except:
+                os.system('fswebcam -d /dev/video3 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+                logger.info("Skipped /dev/video2...trying to capture image with /dev/video3.")
+        except:
+            print("Camera not detected...Check camera connection")
+            logger.warning("Camera not detected")
 
 
     def image_to_text(self):

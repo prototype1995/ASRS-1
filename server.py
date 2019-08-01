@@ -244,12 +244,6 @@ class ASRSHandler(BaseHTTPRequestHandler):
                            'response-good': 200,
                            'response-bad': 406,
                            'content-type': 'application/json'
-                         },
-                 'SENDDATE':{
-                           'cmd':'self.send_ret_date()',
-                           'response-good': 200,
-                           'response-bad': 406,
-                           'content-type': 'text/plain'
                          }
 
               }
@@ -296,21 +290,6 @@ class ASRSHandler(BaseHTTPRequestHandler):
             return (False, bytes("-1", "UTF-8"))
 
 
-    def send_ret_date(self):
-        """
-        Method to send the retrieval date of given UID
-        """
-        try:
-            uid = self.GET_args['uid'][0]
-            retrieval_date = asrs.db.return_date_out(uid)
-            logger.info("Sending retrieval date-time of {}".format(uid))
-            formated_date = retrieval_date[0:4]+"-"+retrieval_date[4:6]+"-"+retrieval_date[6:8]+" at "+retrieval_date[8:10]+":"+retrieval_date[10:12]
-            return(True, bytes(formated_date, "UTF-8"))
-        except:
-            logger.warning("INVALID UID provided.")
-            return(False, bytes(" ", "UTF-8"))
-
-
     def serve_text(self, content):
         if not content:
             content = "PlaceHolder Text"
@@ -353,9 +332,8 @@ class ASRSHandler(BaseHTTPRequestHandler):
         """
         try:
             uid = self.GET_args['uid'][0]
-            print(asrs.db.return_date_out(uid))
             logger.info("Validating UID {}".format(uid))
-            t = asrs.db.get_by_uid_from_current(uid) #sends a 200 response if successfull
+            t = asrs.db.get_by_uid_from_current(uid) #sends a 200 response if successful
             logger.info("Validating UID {}".format(uid))
             print("new slot: {}".format(t))
             asrs.slot.copy(asrs.asrsSlots.Slot(t))
@@ -365,15 +343,13 @@ class ASRSHandler(BaseHTTPRequestHandler):
                             "slot": "{}"}}'''.format("init_storage_seq()", t)
             return(True, bytes(content, "UTF-8"))
         except ValueError:
-            logger.warning("Invalid UID")
-            print(asrs.db.return_date_out(uid))
-            content = '''{{ "cmd": "validate_uid()",
-                            "slot": "{}"}}'''.format("init_storage_seq()", "-1")
-            return(False, bytes(content, "UTF-8"))
+                logger.warning("Invalid UID")
+                content = '''{{ "cmd": "validate_uid()",
+                                "slot": "{}"}}'''.format("init_storage_seq()", "-1")
+                return(False, bytes(content, "UTF-8"))
 
         except KeyError:
             logger.warning("KeyError - No valid key named 'uid' in GET parameters")
-            print(asrs.db.return_date_out(uid))
             return (False, bytes("No key named uid", "UTF-8"))
 
 

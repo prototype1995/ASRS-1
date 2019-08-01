@@ -27,10 +27,10 @@ class ASRSDataBase:
         Returns: None
         """
 
-        self.__conn = sqlite3.connect(self.__db_filename)
+        self.__conn = sqlite3.connect(self.__db_filename, check_same_thread=False)
         self.__c = self.__conn.cursor()
         if slot_count is None:
-            self.slot_count = 40
+            self.slot_count = 33
         else:
             self.slot_count = slot_count
 

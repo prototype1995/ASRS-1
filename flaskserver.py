@@ -124,6 +124,12 @@ responses = { 'INIT_STORE'   : {
                          'response-bad': 406,
                          'content-type': 'text/plain'
                        },
+         'DETECTCARD' :{
+                          'cmd': 'asrs.detect_card()',
+                          'response-good': 200,
+                          'response-bad': 406,
+                          'content-type': 'application/json'
+                        },
          'GETOCRINFO' :{
                          'cmd': 'serve_text(asrs.slot.ocr_info)',
                          'response-good': 200,
@@ -274,9 +280,9 @@ def cmd_handler():
             cmd_dict = responses[cmd]
             ret, content = eval(cmd_dict['cmd'])
             if ret:
-                response = Response(response="True", status=cmd_dict['response-good'], content_type=cmd_dict['content-type'])
+                response = Response(response=content, status=cmd_dict['response-good'], content_type=cmd_dict['content-type'])
             else:
-                response = Response(response="False", status=cmd_dict['response-bad'], content_type=None)
+                response = Response(response=content, status=cmd_dict['response-bad'], content_type=None)
         else:
             response = Response(response="False", status=406, content_type=None)
     return response
@@ -425,9 +431,8 @@ if __name__ == "__main__":
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
-        logger.info("Server started - %s:%s"%(ip, 8000))
-        app.run(host=ip, port=8000, debug=True)
+        logger.info("Server started - %s:%s"%(ip, 9000))
+        app.run(host=ip, port=9000, debug=True)
 
     except OSError as err:
         logger.error(err)
-

@@ -46,6 +46,7 @@ class Slot:
         """
         self.uid = "ASRS" + str(hash(self.datetime_in))
 
+
     def get_tuple(self, to_records = False):
         """
         Args: boolean to_records - whether it is being called by records or current table
@@ -65,6 +66,7 @@ class Slot:
         """
         dt = datetime.now()
         return dt.strftime("%Y%m%d%H%M%S")
+
 
     def get_image_filename(self, side=1):
         """

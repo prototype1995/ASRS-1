@@ -22,7 +22,7 @@ from shutil import copyfile
 
 
 
-config_file = "asrsConfig.conf"
+config_file = "/home/pi/Project/ASRS3/server/asrsConfig.conf"
 config = configparser.ConfigParser()
 config.read(config_file)
 
@@ -72,7 +72,7 @@ slot = asrsSlots.Slot((0, '', 0, '', ''))
 
 #### Storage && Retrieval position list
 storage_list = [1.5, 2.1, 2.8, 3.5, 4.1, 4.7, 5.3, 6, 6.5, 7.1, 7.7, 8.4, 9, 9.6, 10.2, 10.9, 11.6, 12.2, 12.7, 13.4, 14.1, 14.75, 15.35, 15.95, 16.65, 17.25, 17.95, 18.55, 19.2, 19.7, 20.2, 20.9, 21.50]
-retrieval_list = [8.2, 8.8, 9.4, 10.1, 10.8, 11.4, 12, 12.6, 13.2, 13.8, 14.5, 15.1, 15.7, 16.3, 16.9, 17.5, 18.1, 18.8, 19.4, 20, 20.65, 21.3, 21.9, 22.55, 23.22, 23.87, 24.52, 25.12, 25.72, 26.32, 26.92, 27.55, 28.2] 
+retrieval_list = [8.2, 8.8, 9.4, 10.1, 10.8, 11.4, 12, 12.6, 13.2, 13.8, 14.5, 15.1, 15.7, 16.3, 16.9, 17.5, 18.1, 18.8, 19.4, 20, 20.65, 21.3, 21.9, 22.55, 23.22, 23.87, 24.52, 25.12, 25.72, 26.32, 26.92, 27.55, 28.4] 
 
 def move_to_slot(pos=0, storage=True):
     """Move the storage rack to the specified position
