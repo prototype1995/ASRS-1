@@ -138,3 +138,24 @@ class Solenoid:
         GPIO.output(self.in1_pin, GPIO.HIGH)
         time.sleep(duration)
         GPIO.output(self.in1_pin, GPIO.LOW)
+
+
+class LED:
+    """
+    Switch the LED.
+    """
+    def __init__(self, in1_pin=32):
+        self.in1_pin = in1_pin
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(in1_pin , GPIO.OUT)
+        GPIO.output(self.in1_pin, GPIO.LOW)
+
+    def fire_led(self, state=False):
+        """
+        Method to turn on and off LED according to state.
+        """
+        if state:
+            GPIO.output(self.in1_pin, GPIO.HIGH)
+        else:
+            GPIO.output(self.in1_pin, GPIO.LOW)

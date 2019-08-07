@@ -16,6 +16,9 @@ class ASRSDataBase:
 
     CREATE TABLE records
                  (uid int, datetime_in text, datetime_out text, ocr_info text)
+
+    CREATE TABLE ocr_table
+                 (uid int, name text, dob text, id text, company text, validity text)
     """
 
     __db_filename = "ASRS_records.db"
@@ -47,6 +50,11 @@ class ASRSDataBase:
             self.__c.execute('''CREATE TABLE records
                          (uid int, datetime_in text, datetime_out text,
                          ocr_info text)''')
+
+            self.__c.execute('''CREATE TABLE ocr_table
+                         (uid int, name text, dob text, id text, company text,
+                          validity text)''')
+
             #intialize dummy values for table current if the file is newly created
             for i in range(self.slot_count):
                 if i not in self.inaccessible_slots:
@@ -183,6 +191,33 @@ class ASRSDataBase:
         t = s.get_tuple(to_records=True)
         self.__c.execute('INSERT INTO records(uid, datetime_in, datetime_out, ocr_info) VALUES (?, ?, ?, ?)', t)
         self.__conn.commit()
+
+
+    def insert_to_ocr_table(self, o):
+        """
+        """
+        self.uid = o[0]
+        self.name = o[1]
+        self.dob = o[2]
+        self.id = o[3]
+        self.company = o[4]
+        self.validity = o[5]
+
+        self.__c.execute('INSERT INTO ocr_table(uid, name, dob, id, company, validity) VALUES (?, ?, ?, ?, ?, ?)', (self.uid, self.name, self.dob, self.id, self.company, self.validity))
+        self.__conn.commit()
+
+
+    def list_slot_from_name(self, name):
+        """
+        Lists all UID's with specified name.
+        """
+        uid = self.__c.execute('SELECT uid FROM ocr_table WHERE name = ?', (name,)).fetchone()
+        #return uid
+        j = 0
+        for i in uid:
+            slot[j] = get_by_uid_from_current(i)
+            j = j+1
+        return slot
 
 
     def update_rec_datetimeout(self, date_out, UID):

@@ -10,6 +10,8 @@ LOGFILE = 'testing/log.log'
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+import base64
+
 #Set the logging format
 formatter = logging.Formatter('%(asctime)s :: [%(levelname)s] - %(name)s - %(message)s')
 
@@ -36,7 +38,7 @@ from asrs import asrsOps as asrs
 from shutil import copyfile
 
 
-UPLOAD_FOLDER = 'user_photos'
+UPLOAD_FOLDER = 'user_files'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -124,11 +126,11 @@ responses = { 'INIT_STORE'   : {
                          'response-bad': 406,
                          'content-type': 'text/plain'
                        },
-         'DETECTCARD' :{
-                          'cmd': 'asrs.detect_card()',
-                          'response-good': 200,
-                          'response-bad': 406,
-                          'content-type': 'application/json'
+         'DETECTCARD'     :{
+                         'cmd': 'asrs.detect_card()',
+                         'response-good': 200,
+                         'response-bad': 406,
+                         'content-type': 'text/plain'
                         },
          'GETOCRINFO' :{
                          'cmd': 'serve_text(asrs.slot.ocr_info)',
@@ -220,42 +222,30 @@ responses = { 'INIT_STORE'   : {
                    'response-bad': 406,
                    'content-type': 'application/x-sqlite3'
                       },
-         'DAILYACTS':{
-                   'cmd': 'get_user_list_by_date()',
-                   'response-good': 200,
-                   'response-bad': 406,
-                   'content-type': 'application/json'
-                         },
-         'VALIDATESLOT':{
-                   'cmd': 'validate_slot()',
-                   'response-good': 200,
-                   'response-bad': 406,
-                   'content-type': 'application/json'
-                         },
-         'LSALL':{
-                   'cmd': 'asrs.list_all_curr_users()',
-                   'response-good': 200,
-                   'response-bad': 406,
-                   'content-type': 'application/json'
-                         },
-          'SENDDATE':{
-                   'cmd':'send_ret_date()',
+         'SENDDATE':{
+                   'cmd': 'sent_ret_date()',
                    'response-good': 200,
                    'response-bad': 406,
                    'content-type': 'text/plain'
-                         },
-#         'UPLOADIMAGE':{
-#                   'cmd': 'upload_file()',
-#                   'response-good' : 200,
-#                   'response-bad' : 406,
-#                   'content-type' : 'multipart/form-data'
-#                      },
+                     },
          'SENTIMAGE':{
                    'cmd': 'sent_user_photo()',
                    'response-good': 200,
                    'response-bad': 406,
                    'content-type': 'image/jpg'
-                     }
+                     },
+         'GETOCR':{
+                   'cmd': 'get_ocr_info()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                    },
+         'LSSLOT':{
+                   'cmd': 'list_slot_from_name()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                  }
       }
 
 
@@ -273,7 +263,7 @@ def cmd_handler():
 #        print("POST : {}".format(request.form.to_dict()))
 #        print("data : {}".format(data))
 #        response = Response(response=data, status=200, content_type='application/json')
-    if request.method == 'GET':
+    if request.method == 'GET' or request.method == 'POST':
         cmd = request.args.get('cmd')
         print(request.args.to_dict())
         if cmd in responses:
@@ -288,41 +278,72 @@ def cmd_handler():
     return response
 
 
-
-####### IMG Handler #######
+####### IMG HANDLER ######
 @app.route('/upload_file', methods=['GET', 'POST'])
 def img_handler():
     if request.method == 'POST':
-        file = request.files['file']
-        print("POST : {}".format(request.form.to_dict()))
-        filename = secure_filename(file.filename)
-        print("filename : {}".format(filename))
-        file.save("user_files/"+filename) #change acc
-        response = Response(response=filename, status=200, content_type='application/json')
+        filename = request.form.get('uid') + '.jpeg'
+        file_b64 = bytes(request.form.get('file'), 'utf-8')
+        with open("user_files/"+filename, 'wb') as fp:
+            fp.write(base64.decodebytes(file_b64))
+            #os.rename("user_files/"+filename,uid)
+        #file = request.files['file']
+        #print("POST : {}".format(request.files.to_dict()))
+        #filename = secure_filename(file.filename)
+        #print("filename : {}".format(filename))
+        #file.save("user_files/"+filename)
+        response = Response(response=filename, status=200)
     return response
 
 
+def get_ocr_info():
+    """
+    Method to insert ocr info into ocr_table.
+    """
+    try:
+        uid = request.args.get('uid')
+        name = request.args.get('name')
+        dob = request.args.get('dob')
+        id = request.args.get('id')
+        company = request.args.get('company')
+        validity = request.args.get('validity')
+        o = (uid, name, dob, id, company, validity)
+        asrs.db.insert_to_ocr_table(o)
+        logger.info("OCR values inserted...")
+        return(True, bytes("True", "UTF-8"))
+    except:
+        logger.info("OCR value insertion failed...")
+        return(False, bytes("-1", "UTF-8"))
 
-#def allowed_file(filename):
-#    return '.' in filename and \
-#        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def list_slot_from_name():
+    """
+    Method to list users by name.
+    """
+    try:
+        name = request.args.get('name')
+        slot = asrs.db.list_slot_from_name(name)
+        print(slot)
+        logger.info("Users listed with provided name...")
+        return(True, bytes(slot,"UTF-8"))
+    except:
+        logger.info("No user with specified name found...")
+        return(False, bytes("-1", "UTF-8"))
 
 
-#def upload_file():
-#    if 'file' not in request.files:
-#        print('No file part')
-#        return redirect(request.url)
-#    if request.method == 'POST':
-#        file = request.files['file']
-#        if file.filename == '':
-#            print('No selected file')
-#            return (False, bytes("-1", "UTF-8"))
-#        if file and allowed_file(file.filename):
-#            print("got file")
-#            filename = secure_filename(file.filename)
-#            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-#            logger.info("File -'{}'- uploaded to user photos".format(filename))
-#            return (True, bytes("file got", "UTF-8"))
+def sent_ret_date():
+    """
+    Method to return retrieval date from uid.
+    """
+    try:
+        uid = request.args.get('uid')
+        retrieval_date = asrs.db.return_date_out(uid)
+        logger.info("Sending retrieval date-time of {}".format(uid))
+        formatted_date = retrieval_date[0:4]+"-"+retrieval_date[4:6]+"-"+retrieval_date[6:8]
+        return(True, bytes(formatted_date, "UTF-8"))
+    except:
+        logger.warning("INVALID UID provided")
+        return(False, bytes(" ", "UTF-8"))
 
 
 def sent_user_photo():
@@ -330,7 +351,7 @@ def sent_user_photo():
     Method to sent user photo.
     """
     uid = request.args.get('uid')
-    ret, content = serve_image("user_files/"+uid)
+    ret, content = serve_image("user_files/"+uid+".jpeg")
     if ret:
         logger.info("User Photo sent.")
         return (True, content)
@@ -346,21 +367,6 @@ def get_count():
         return (True, bytes(content, "UTF-8"))
     except IndexError:
         return (False, bytes("-1", "UTF-8"))
-
-
-def send_ret_date():
-    """
-    Method to send the retrieval date of given UID
-    """
-    try:
-        uid = self.GET_args['uid'][0]
-        retrieval_date = asrs.db.return_date_out(uid)
-        logger.info("Sending retrieval date-time of {}".format(uid))
-        formated_date = retrieval_date[0:4]+"-"+retrieval_date[4:6]+"-"+retrieval_date[6:8]+" at "+retrieval_date[8:10]+":"+retrieval_date[10:12]
-        return(True, bytes(formated_date, "UTF-8"))
-    except:
-        logger.warning("INVALID UID provided.")
-        return(False, bytes(" ", "UTF-8"))
 
 
 def serve_text(content):
