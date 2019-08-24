@@ -148,8 +148,6 @@ def init_image_proc():
     return(True, bytes(content, "UTF-8"))
 
 
-
-
 def confirm_storage(print=False):
     logger.debug("confirm_storage() called...")
     s1.fire_solenoid(2)
@@ -339,5 +337,4 @@ def list_all_curr_users():
     d = db.get_all_curr_users()
     content = json.dumps(d)
     return(True, bytes(content, "UTF-8"))
-
 
