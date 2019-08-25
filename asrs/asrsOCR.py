@@ -15,6 +15,23 @@ class OCR:
     Takes photo and converts to text
 
     """
+
+    def crop_image(self, image, cam_num):
+        """
+        Method to crop image according to camera number.
+        """
+        if cam_num == 1:
+            coords = (5, 15, 310, 210)
+            image_obj = Image.open(image)
+            cropped_image = image_obj.crop(coords)
+            return cropped_image.save('cropped_usb1_img.jpg')
+        else:
+            coords = (5, 5, 310, 195)
+            image_obj = Image.open(image)
+            cropped_image = image_obj.crop(coords)
+            return cropped_image.save('cropped_usb2_img.jpg')
+
+
     def capture_photo(self, image_filename):
         """
         Use USB-Camera-1 to capture a photo
@@ -26,9 +43,11 @@ class OCR:
         try:
             try:
                 os.system('fswebcam -d /dev/video0 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+                self.crop_image(image_filename, 1)
                 logger.info("Capturing image with /dev/video0.")
             except:
                 os.system('fswebcam -d /dev/video1 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+                self.crop_image(image_filename, 1)
                 logger.info("Skipped /dev/video0...trying to capture image with /dev/video1.")
         except:
             print("Camera not detected... Check camera connection")
@@ -43,9 +62,11 @@ class OCR:
         try:
             try:
                 os.system('fswebcam -d /dev/video2 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+                self.crop_image(image_filename, 2)
                 logger.info("Capturing image with /dev/video2.")
             except:
                 os.system('fswebcam -d /dev/video3 -r 320x240 -S 3 --jpeg 50 --no-banner --save '+ self.image_filename)
+                self.crop_image(image_filename, 2)
                 logger.info("Skipped /dev/video2...trying to capture image with /dev/video3.")
         except:
             print("Camera not detected...Check camera connection")

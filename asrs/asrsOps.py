@@ -255,7 +255,9 @@ def stepperMotor_test():
 
 def piCamera_test():
     logger.info("Testing PiCam...[file-name : piCam_test_image.jpg]")
+    l1.fire_led(state=True)
     ocr.capture_photo("piCam_test_image.jpg")
+    l1.fire_led(state=False)
     try:
         with open("piCam_test_image.jpg", 'rb') as file:
             return(True, file.read())
@@ -264,12 +266,27 @@ def piCamera_test():
 
 def usbCamera_test():
     logger.info("Testing USB Cam...[file-name : usbCam_test_image.jpg]")
+    l1.fire_led(state=True)
     ocr.capture_usb_photo("usbCam_test_image.jpg")
+    l1.fire_led(state=False)
     try:
         with open("usbCam_test_image.jpg", 'rb') as file:
             return(True, file.read())
     except:
         return(False, "")
+
+
+def led_test():
+    """
+    Method to test LED.
+    """
+    l1.fire_led(state=True)
+    time.sleep(2)
+    l1.fire_led(state=False)
+    content = '''{{ "cmd": "{}",
+                    "slot": "{}"}}'''.format("led_test()", slot.get_tuple())
+    return(True, bytes(content, "UTF-8"))
+
 
 def go_home():
     logger.info("Homing... [OBSOLETE]")

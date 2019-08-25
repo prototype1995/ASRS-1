@@ -1,0 +1,12 @@
+[Unit]
+Description=Start ASRS server
+Wants=network.target network-online.target
+After=multi-user.target network.target network-online.target
+
+[Service]
+Type=idle
+ExecStartPre=/bin/sleep 5
+ExecStart=./home/pi/asrs.sh
+
+[Install]
+WantedBy=multi-user.target

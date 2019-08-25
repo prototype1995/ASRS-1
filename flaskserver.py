@@ -109,13 +109,13 @@ responses = { 'INIT_STORE'   : {
                          'content-type': 'image/png'
                        },
          'FETCHIDCARD1':{
-                         'cmd': 'serve_image("IDCARD1.JPG")',
+                         'cmd': 'serve_image("cropped_usb1_img.jpg")',
                          'response-good': 200,
                          'response-bad': 406,
                          'content-type': 'image/jpg'
                        },
          'FETCHIDCARD2':{
-                         'cmd': 'serve_image("IDCARD2.JPG")',
+                         'cmd': 'serve_image("cropped_usb2_img.jpg")',
                          'response-good': 200,
                          'response-bad': 406,
                          'content-type': 'image/jpg'
@@ -188,9 +188,15 @@ responses = { 'INIT_STORE'   : {
                        },
          'USBCAMTEST':{
                          'cmd': 'asrs.usbCamera_test()',
+                        'response-good': 200,
+                         'response-bad': 406,
+                       'content-type': 'image/jpg'
+                       },
+         'LEDTEST':{
+                         'cmd': 'asrs.led_test()',
                          'response-good': 200,
                          'response-bad': 406,
-                         'content-type': 'image/jpg'
+                         'content-type': 'text/plain'
                        },
          'CPUUSAGE':{
                          'cmd': 'asrs.cpuUsage()',
@@ -240,8 +246,38 @@ responses = { 'INIT_STORE'   : {
                    'response-bad': 406,
                    'content-type': 'text/plain'
                     },
-         'LSSLOT':{
+         'LSNAME':{
                    'cmd': 'list_slot_from_name()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                  },
+         'DAILYACTS':{
+                    'cmd': 'get_user_list_by_date()',
+                    'response-good': 200,
+                    'response-bad': 406,
+                    'content-type': 'application/json'
+                      },
+         'VALIDATESLOT':{
+                    'cmd': 'validate_slot()',
+                    'response-good': 200,
+                    'response-bad': 406,
+                    'content-type': 'application/json'
+                      },
+         'LSALL':{
+                    'cmd': 'asrs.list_all_curr_users()',
+                    'response-good': 200,
+                    'response-bad': 406,
+                    'content-type': 'application/json'
+                    },
+         'CROP_COORDS':{
+                     'cmd': 'crop_image_coords()',
+                     'response-good': 200,
+                     'response-bad': 406,
+                     'content-type': 'application/json'
+                       },
+         'SHUTDOWN':{
+                   'cmd': 'pi_shutdown()',
                    'response-good': 200,
                    'response-bad': 406,
                    'content-type': 'text/plain'
@@ -320,15 +356,15 @@ def list_slot_from_name():
     """
     Method to list users by name.
     """
-    try:
-        name = request.args.get('name')
-        slot = asrs.db.list_slot_from_name(name)
-        print(slot)
-        logger.info("Users listed with provided name...")
-        return(True, bytes(slot,"UTF-8"))
-    except:
-        logger.info("No user with specified name found...")
-        return(False, bytes("-1", "UTF-8"))
+   # try:
+    name = request.args.get('name')
+    slot, out = asrs.db.list_slot_from_name(name)
+    print(slot, out)
+    logger.info("Users listed with provided name...")
+#    return(True, bytes(slot,"UTF-8"))
+#    except:
+#        logger.info("No user with specified name found...")
+#        return(False, bytes("-1", "UTF-8"))
 
 
 def sent_ret_date():
@@ -358,6 +394,12 @@ def sent_user_photo():
     else:
         logger.warning("Failed to fetch User Photo")
         return (False, bytes("-1", "UTF-8"))
+
+def get_user_list_by_date():
+    """
+    Method to list users by date.
+    """
+    pass
 
 
 def get_count():
@@ -428,6 +470,57 @@ def validate_uid():
         logger.warning("KeyError - No valid key named 'uid' in GET parameters")
         return (False, bytes("No key named uid", "UTF-8"))
 
+
+def validate_slot():
+    """
+    Method to validate slot.
+    """
+    try:
+        slot = request.args.get('slot')
+        logger.info("Validating slot {}".format(slot))
+        t = asrs.db.get_by_slot_id_from_current(slot) #sends a 200 response if successful
+        logger.info("Validating slot {}".format(slot))
+        print("new slot: {}".format(t))
+        asrs.slot.copy(asrs.asrsSlots.Slot(t))
+        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=1), "IDCARD1.JPG")
+        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=2), "IDCARD2.JPG")
+        content = '''{{ "cmd": "validate_slot()",
+                        "slot": "{}"}}'''.format("init_storage_seq()", t)
+        return(True, bytes(content, "UTF-8"))
+    except ValueError:
+            logger.warning("Invalid slot")
+            content = '''{{ "cmd": "validate_slot()",
+                            "slot": "{}"}}'''.format("init_storage_seq()", "-1")
+            return(False, bytes(content, "UTF-8"))
+    except KeyError:
+        logger.warning("KeyError - No valid key named 'slot' in GET parameters")
+        return (False, bytes("No key named slot", "UTF-8"))
+
+
+def crop_image_coords():
+    """
+    Method to iset crop coordinates
+    """
+    try:
+        coords = self.GET_args['coords'][0]
+        side = int(self.GET_args['side'][0])-1
+        t = tuple([int(float(i)) for i in coords.split(',')])
+        logger.info("Converting coords to tuple ".format(t))
+        asrs.crop_coordinates[side] = t
+        logger.info("asrs.crop_coordinates = {}".format(asrs.crop_coordinates))
+        content = '''{{ "cmd": "crop_image_coods()"
+                        }}'''
+        return(True, bytes(content, "UTF-8"))
+    except KeyError:
+        logger.warning("KeyError - No valid key named 'coords' or 'side' in GET parameters")
+        return (False, bytes("No key named coords or side", "UTF-8"))
+
+
+def pi_shutdown():
+    """
+    Method to shutdown pi.
+    """
+    os.system("sudo shutdown -h now")
 
 if __name__ == "__main__":
     try:

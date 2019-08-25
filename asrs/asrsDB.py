@@ -211,13 +211,16 @@ class ASRSDataBase:
         """
         Lists all UID's with specified name.
         """
-        uid = self.__c.execute('SELECT uid FROM ocr_table WHERE name = ?', (name,)).fetchone()
+        uid = self.__c.execute('SELECT uid FROM ocr_table WHERE name = ?', (name,)).fetchone()[0]
         #return uid
-        j = 0
-        for i in uid:
-            slot[j] = get_by_uid_from_current(i)
-            j = j+1
-        return slot
+#        j = 0
+#        for i in uid:
+        date_in = self.__c.execute('SELECT datetime_in FROM current WHERE uid = ?', (uid,)).fetchone()
+        date_out = self.return_date_out(uid)
+            #slot[j] = get_by_uid_from_current(i)
+       #     j = j+1
+#        list_data = [date_in[0], date_out]
+        return(date_in[0], date_out)
 
 
     def update_rec_datetimeout(self, date_out, UID):
@@ -228,6 +231,7 @@ class ASRSDataBase:
                             SET datetime_out = ?
                             WHERE uid = ?''',(date_out,UID,))
         self.__conn.commit()
+
 
     def return_date_out(self, UID):
         """
