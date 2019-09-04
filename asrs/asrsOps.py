@@ -188,14 +188,14 @@ def confirm_retrieval():
 def purge_all_cards():
     logger.debug("Purging all cards...")
     logger.info("Homing...")
-    self.auto_home()
+    auto_home()
     for i in range(33):
-        self.move_to_slot(pos=i, storage=False)
-        self.push_card()
-        self.auto_home()
+        move_to_slot(pos=i, storage=False)
+        push_card()
+        auto_home()
 
     logger.info("Deleting database and all images...")
-    #os.system("rm ASRS_records.db *.jpg /user_files/*")
+   # os.system("rm ASRS_records.db *.jpg /user_files/*")
     os.remove("ASRS_records.db")
     os.remove("*.jpg")
     os.remove("/user_files/*")
