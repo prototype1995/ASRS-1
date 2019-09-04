@@ -207,22 +207,6 @@ class ASRSDataBase:
         self.__conn.commit()
 
 
-    def list_slot_from_name(self, name):
-        """
-        Lists all UID's with specified name.
-        """
-        uid = self.__c.execute('SELECT uid FROM ocr_table WHERE name = ?', (name,)).fetchone()[0]
-        #return uid
-#        j = 0
-#        for i in uid:
-        date_in = self.__c.execute('SELECT datetime_in FROM current WHERE uid = ?', (uid,)).fetchone()
-        date_out = self.return_date_out(uid)
-            #slot[j] = get_by_uid_from_current(i)
-       #     j = j+1
-#        list_data = [date_in[0], date_out]
-        return(date_in[0], date_out)
-
-
     def update_rec_datetimeout(self, date_out, UID):
         """
         Updates the date-time out on retrieval
@@ -273,3 +257,38 @@ class ASRSDataBase:
         for slot_id, uid in current_users.fetchall():
             d[slot_id] = uid
         return d
+
+
+    def list_all_users_by_date(self, date):
+        """
+        Method to list user data by date.
+        Params : date
+        Returns : {name : {uid : date_out}}
+        """
+        user_data = {}
+        key_data = {}
+        date_in = self.__c.execute('SELECT datetime_in FROM records')
+        for i in date_in.fetchall():
+            if i[0:8]==date:
+                uid = self.__c.execute('SELECT uid FROM records WHERE datetime_in = ?', (i,)).fetchone()[0]
+                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i,)).fetchone()[0]
+                name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
+                key_data[uid] = date_out
+                user_data[name] = key_data
+        return user_data
+
+
+    def list_slot_from_name(self, name):
+        """
+        Lists all UID's with specified name.
+        """
+        user_list = {}
+        key_list ={}
+        uid = self.__c.execute('SELECT uid FROM ocr_table WHERE name = ?', (name,))
+        for i in uid.fetchall():
+            date_in = self.__c.execute('SELECT datetime_in FROM current WHERE uid = ?', (i,)).fetchone()[0]
+            date_out = self.return_date_out(uid)
+            key_list[date_in] = date_out
+            user_list[uid] = key_list
+        return user_list
+

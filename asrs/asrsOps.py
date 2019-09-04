@@ -74,8 +74,8 @@ slot = asrsSlots.Slot((0, '', 0, '', ''))
 
 
 #### Storage && Retrieval position list
-storage_list = [2, 2.6, 3.2, 3.9, 4.5, 5.1, 5.7, 6.3, 6.9, 7.5, 8.2, 8.8, 9.4, 10, 10.6, 11.2, 11.8, 12.4, 13, 13.7, 14.3, 14.9, 15.5, 16.2, 16.8, 17.5, 18.2, 18.8, 19.4, 20, 20.6, 21.3, 21.8]
-retrieval_list = [8.3, 8.9, 9.5, 10.1, 10.7, 11.3, 12, 12.6, 13.2, 13.8, 14.5, 15.1, 15.7, 16.3, 17, 17.7, 18.25, 18.85, 19.5, 20.1, 20.75, 21.4, 22, 22.6, 23.2, 23.9, 24.5, 25.1, 25.7, 26.3, 27, 27.65, 28.25] 
+storage_list = [2.1, 2.7, 3.3, 3.9, 4.6, 5.2, 5.8, 6.6, 7.0, 7.6, 8.3, 8.9, 9.5, 10.1, 10.7, 11.5, 12, 12.6, 13.2, 13.8, 14.5, 15.1, 15.7, 16.35, 16.95, 17.75, 18.2, 18.85, 19.45, 20.05, 20.65, 21.3, 22.05]
+retrieval_list = [8.5, 9.2, 9.9, 10.5, 11.1, 11.7, 12.3, 13, 13.6, 14.2, 14.8, 15.4, 16.1, 16.7, 17.3, 17.9, 18.6, 19.2, 19.8, 20.4, 21, 21.7, 22.3, 23, 23.6, 24.2, 24.8, 25.4, 26, 26.6, 27.25, 27.9, 28.5] 
 
 def move_to_slot(pos=0, storage=True):
     """Move the storage rack to the specified position
@@ -150,7 +150,7 @@ def init_image_proc():
 
 def confirm_storage(print=False):
     logger.debug("confirm_storage() called...")
-    s1.fire_solenoid(2)
+    s1.fire_solenoid(3)
     logger.info("Updating slot object.")
     slot.status = 1
     db.update_current(slot)
@@ -187,26 +187,18 @@ def confirm_retrieval():
 
 def purge_all_cards():
     logger.debug("Purging all cards...")
-    # print("Homing...")
-    #
-    # no_of_slots = 3
-    # ser.write(bytes("home_DCMOTOR,0,0,0;","UTF-8"))
-    # check_serial()
-    # ser.write(bytes("home_STEPPERMOTOR, 0, 0, 0;","UTF-8"))
-    # check_serial()
-    #
-    # move_to_slot(0,9.2)
-    # for slot_num in range(no_of_slots):
-    #
-    #     move_to_slot(slot_num, offset=0)
-    #     ser.write(bytes("drive_DCMOTOR,3,1,0;","UTF-8"))
-    #     check_serial()
-    #
-    #     ser.write(bytes("home_DCMOTOR, 0, 0, 0;","UTF-8"))
-    #     check_serial()
-    #
-    # print("Deleting db...")
-    # os.remove("ASRS_records.db")
+    logger.info("Homing...")
+    self.auto_home()
+    for i in range(33):
+        self.move_to_slot(pos=i, storage=False)
+        self.push_card()
+        self.auto_home()
+
+    logger.info("Deleting database and all images...")
+    #os.system("rm ASRS_records.db *.jpg /user_files/*")
+    os.remove("ASRS_records.db")
+    os.remove("*.jpg")
+    os.remove("/user_files/*")
 
     content = '''{{"cmd":"{}"
                     "slot": "{}"}}'''.format("purge_all_cards()", slot.get_tuple())
@@ -355,3 +347,21 @@ def list_all_curr_users():
     content = json.dumps(d)
     return(True, bytes(content, "UTF-8"))
 
+
+def list_all_users_by_date(date):
+    """
+    """
+    user_data = db.list_all_users_by_date(date)
+    content = json.dumps(user_data)
+    return(True, bytes(content, "UTF-8"))
+
+
+def list_all_users_by_name(name):
+    """
+    Method to list users by name.
+    Args : Name
+    Returns : {uid : {date_in : date_out}}
+    """
+    user_list = db.list_slot_from_name(name)
+    content = json.dumps(user_list)
+    return(True, bytes(content, "UTF-8"))

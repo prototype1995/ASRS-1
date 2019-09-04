@@ -250,7 +250,7 @@ responses = { 'INIT_STORE'   : {
                    'cmd': 'list_slot_from_name()',
                    'response-good': 200,
                    'response-bad': 406,
-                   'content-type': 'text/plain'
+                   'content-type': 'application/json'
                   },
          'DAILYACTS':{
                     'cmd': 'get_user_list_by_date()',
@@ -356,15 +356,8 @@ def list_slot_from_name():
     """
     Method to list users by name.
     """
-   # try:
     name = request.args.get('name')
-    slot, out = asrs.db.list_slot_from_name(name)
-    print(slot, out)
-    logger.info("Users listed with provided name...")
-#    return(True, bytes(slot,"UTF-8"))
-#    except:
-#        logger.info("No user with specified name found...")
-#        return(False, bytes("-1", "UTF-8"))
+    asrs.list_all_users_by_name(name)
 
 
 def sent_ret_date():
@@ -375,7 +368,7 @@ def sent_ret_date():
         uid = request.args.get('uid')
         retrieval_date = asrs.db.return_date_out(uid)
         logger.info("Sending retrieval date-time of {}".format(uid))
-        formatted_date = retrieval_date[0:4]+"-"+retrieval_date[4:6]+"-"+retrieval_date[6:8]
+        formatted_date = retrieval_date[0:4]+"-"+retrieval_date[4:6]+"-"+retrieval_date[6:8]+"---"+retrieval_date[8:10]+"-"+retrieval_date[10:12]
         return(True, bytes(formatted_date, "UTF-8"))
     except:
         logger.warning("INVALID UID provided")
@@ -395,11 +388,13 @@ def sent_user_photo():
         logger.warning("Failed to fetch User Photo")
         return (False, bytes("-1", "UTF-8"))
 
+
 def get_user_list_by_date():
     """
     Method to list users by date.
     """
-    pass
+    date = request.args.get('date')
+    asrs.list_all_users_by_date(date)
 
 
 def get_count():
@@ -456,8 +451,8 @@ def validate_uid():
         logger.info("Validating UID {}".format(uid))
         print("new slot: {}".format(t))
         asrs.slot.copy(asrs.asrsSlots.Slot(t))
-        copyfile(asrs.db.get_by_uid_image_filename(uid, side=1), "IDCARD1.JPG")
-        copyfile(asrs.db.get_by_uid_image_filename(uid, side=2), "IDCARD2.JPG")
+        copyfile(asrs.db.get_by_uid_image_filename(uid, side=1), "cropped_usb1_img.jpg")
+        copyfile(asrs.db.get_by_uid_image_filename(uid, side=2), "cropped_usb2_img.jpg")
         content = '''{{ "cmd": "validate_uid()",
                         "slot": "{}"}}'''.format("init_storage_seq()", t)
         return(True, bytes(content, "UTF-8"))
@@ -482,8 +477,8 @@ def validate_slot():
         logger.info("Validating slot {}".format(slot))
         print("new slot: {}".format(t))
         asrs.slot.copy(asrs.asrsSlots.Slot(t))
-        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=1), "IDCARD1.JPG")
-        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=2), "IDCARD2.JPG")
+        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=1), "cropped_usb1_img.jpg") #IDCARD1.JPG
+        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=2), "cropped_usb2_img.jpg") #IDCARD2.JPG
         content = '''{{ "cmd": "validate_slot()",
                         "slot": "{}"}}'''.format("init_storage_seq()", t)
         return(True, bytes(content, "UTF-8"))
