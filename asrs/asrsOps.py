@@ -63,11 +63,12 @@ offset_storage = config.getfloat('SLOTS', 'offset_storage')
 offset_retrieval = config.getfloat('SLOTS', 'offset_retrieval')
 cardTray_pitch = config.getfloat('SLOTS', 'cardTray_pitch')
 
-logger.info("Intial Homing axes...")
+logger.info("Intial Homing axes commented for app testing...")
 
-m2.go_home(delay=0.0001)
-m1.go_home(delay=0.0001)
-logger.info("Initial Homing axes complete.")
+#m2.go_home(delay=0.0001)
+#m1.go_home(delay=0.0001)
+
+#logger.info("Initial Homing axes complete.")
 
 ocr = asrsOCR.OCR()
 slot = asrsSlots.Slot((0, '', 0, '', ''))
@@ -186,19 +187,16 @@ def confirm_retrieval():
     return(True, bytes(content, "UTF-8"))
 
 def purge_all_cards():
-    logger.debug("Purging all cards...")
     logger.info("Homing...")
     auto_home()
+    logger.info("Purging all cards...")
     for i in range(33):
         move_to_slot(pos=i, storage=False)
         push_card()
         auto_home()
 
     logger.info("Deleting database and all images...")
-   # os.system("rm ASRS_records.db *.jpg /user_files/*")
-    os.remove("ASRS_records.db")
-    os.remove("*.jpg")
-    os.remove("/user_files/*")
+    os.system("rm ASRS_records.db *.jpg user_files/*")
 
     content = '''{{"cmd":"{}"
                     "slot": "{}"}}'''.format("purge_all_cards()", slot.get_tuple())
@@ -350,10 +348,13 @@ def list_all_curr_users():
 
 def list_all_users_by_date(date):
     """
+    Method to list users by date.
+    Args : Date
+    Returns : {name : {uid : date_out}}
     """
     user_data = db.list_all_users_by_date(date)
     content = json.dumps(user_data)
-    return(True, bytes(content, "UTF-8"))
+    return content
 
 
 def list_all_users_by_name(name):
@@ -364,4 +365,4 @@ def list_all_users_by_name(name):
     """
     user_list = db.list_slot_from_name(name)
     content = json.dumps(user_list)
-    return(True, bytes(content, "UTF-8"))
+    return content

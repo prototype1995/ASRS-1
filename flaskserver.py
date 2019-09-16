@@ -36,6 +36,7 @@ import time
 import os
 from asrs import asrsOps as asrs
 from shutil import copyfile
+from datetime import datetime
 
 
 UPLOAD_FOLDER = 'user_files'
@@ -109,13 +110,13 @@ responses = { 'INIT_STORE'   : {
                          'content-type': 'image/png'
                        },
          'FETCHIDCARD1':{
-                         'cmd': 'serve_image("cropped_usb1_img.jpg")',
+                         'cmd': 'serve_image("IDCARD1.JPG")',
                          'response-good': 200,
                          'response-bad': 406,
                          'content-type': 'image/jpg'
                        },
          'FETCHIDCARD2':{
-                         'cmd': 'serve_image("cropped_usb2_img.jpg")',
+                         'cmd': 'serve_image("IDCARD2.JPG")',
                          'response-good': 200,
                          'response-bad': 406,
                          'content-type': 'image/jpg'
@@ -281,7 +282,19 @@ responses = { 'INIT_STORE'   : {
                    'response-good': 200,
                    'response-bad': 406,
                    'content-type': 'text/plain'
-                  }
+                  },
+         'REBOOT':{
+                   'cmd': 'pi_reboot()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                  },
+         'SETTIME':{
+                   'cmd': 'set_time()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                   }
       }
 
 
@@ -332,6 +345,23 @@ def img_handler():
     return response
 
 
+def set_time():
+    """
+    Method to set time in RPi.
+    """
+    datetime_str = request.args.get('value')
+    #format_str = "%Y-%m-%d-%H:%M:%S"
+    #date_str = datetime_str[:9]
+    date_str = datetime_str.split(";")
+    #time_str = datetime_str[9:]
+    #datetime_val = datetime.strptime(datetime_str, format_str)
+    #os.system("sudo date +%Y%m%d -s {}".format(date_str))
+    #print("datetime {}".format(date_str))
+    os.system('sudo date "+%F" -s "{}"'.format(date_str[0]))
+    os.system('sudo date "+%T" -s "{}"'.format(date_str[1]))
+    return(True, bytes("True", "UTF-8"))
+
+
 def get_ocr_info():
     """
     Method to insert ocr info into ocr_table.
@@ -357,7 +387,12 @@ def list_slot_from_name():
     Method to list users by name.
     """
     name = request.args.get('name')
-    asrs.list_all_users_by_name(name)
+    try:
+        content = asrs.list_all_users_by_name(name)
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.error("Invalid Name provided - {}".format(name))
+        return(False, bytes("-1", "UTF-8"))
 
 
 def sent_ret_date():
@@ -368,7 +403,7 @@ def sent_ret_date():
         uid = request.args.get('uid')
         retrieval_date = asrs.db.return_date_out(uid)
         logger.info("Sending retrieval date-time of {}".format(uid))
-        formatted_date = retrieval_date[0:4]+"-"+retrieval_date[4:6]+"-"+retrieval_date[6:8]+"---"+retrieval_date[8:10]+"-"+retrieval_date[10:12]
+        formatted_date = retrieval_date[0:4]+"-"+retrieval_date[4:6]+"-"+retrieval_date[6:8]+"---"+retrieval_date[8:10]+":"+retrieval_date[10:12]
         return(True, bytes(formatted_date, "UTF-8"))
     except:
         logger.warning("INVALID UID provided")
@@ -394,7 +429,12 @@ def get_user_list_by_date():
     Method to list users by date.
     """
     date = request.args.get('date')
-    asrs.list_all_users_by_date(date)
+    try:
+        content = asrs.list_all_users_by_date(date)
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.error("Invalid Date provided - {}".format(date))
+        return(False, bytes("-1", "UTF-8"))
 
 
 def get_count():
@@ -451,8 +491,8 @@ def validate_uid():
         logger.info("Validating UID {}".format(uid))
         print("new slot: {}".format(t))
         asrs.slot.copy(asrs.asrsSlots.Slot(t))
-        copyfile(asrs.db.get_by_uid_image_filename(uid, side=1), "cropped_usb1_img.jpg")
-        copyfile(asrs.db.get_by_uid_image_filename(uid, side=2), "cropped_usb2_img.jpg")
+        copyfile(asrs.db.get_by_uid_image_filename(uid, side=1), "IDCARD1.JPG")
+        copyfile(asrs.db.get_by_uid_image_filename(uid, side=2), "IDCARD2.JPG")
         content = '''{{ "cmd": "validate_uid()",
                         "slot": "{}"}}'''.format("init_storage_seq()", t)
         return(True, bytes(content, "UTF-8"))
@@ -477,8 +517,8 @@ def validate_slot():
         logger.info("Validating slot {}".format(slot))
         print("new slot: {}".format(t))
         asrs.slot.copy(asrs.asrsSlots.Slot(t))
-        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=1), "cropped_usb1_img.jpg") #IDCARD1.JPG
-        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=2), "cropped_usb2_img.jpg") #IDCARD2.JPG
+        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=1), "IDACRD1.JPG") #IDCARD1.JPG
+        copyfile(asrs.db.get_by_slot_id_image_filename(slot, side=2), "IDCARD2.JPG") #IDCARD2.JPG
         content = '''{{ "cmd": "validate_slot()",
                         "slot": "{}"}}'''.format("init_storage_seq()", t)
         return(True, bytes(content, "UTF-8"))
@@ -516,6 +556,16 @@ def pi_shutdown():
     Method to shutdown pi.
     """
     os.system("sudo shutdown -h now")
+#    return(True, bytes("OK", "UTF-8"))
+
+
+def pi_reboot():
+    """
+    Method to reboot pi.
+    """
+    os.system("sudo reboot -h now")
+#    return(True, bytes("OK", "UTF-8"))
+
 
 if __name__ == "__main__":
     try:
@@ -525,8 +575,8 @@ if __name__ == "__main__":
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
-        logger.info("Server started - %s:%s"%(ip, 9000))
-        app.run(host=ip, port=9000, debug=True)
+        logger.info("Server started - %s:%s"%(ip, 8888))
+        app.run(host=ip, port=8888, debug=True)
 
     except OSError as err:
         logger.error(err)

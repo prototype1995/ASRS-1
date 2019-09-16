@@ -198,7 +198,17 @@ class ASRSDataBase:
         """
         self.uid = o[0]
         self.name = o[1]
-        self.dob = o[2]
+        #self.dob = o[2]
+
+        # converting DOB in the form -- 01-Jan-2000
+        try:
+            DOB = o[2]
+            month_dict = {'01':'Jan', '02':'Feb', '03':'Mar', '04':'Apr', '05':'May', '06':'Jun', '07':'Jul', '08':'Aug', '09':'Sep', '10':'Oct', '11':'Nov', '12':'Dec'}
+            month = month_dict[DOB[3:5]]
+            self.dob = DOB[0:2] + "-" + month + "-" + DOB[6:]
+        except:
+            self.dob = o[2]
+
         self.id = o[3]
         self.company = o[4]
         self.validity = o[5]
@@ -269,13 +279,14 @@ class ASRSDataBase:
         key_data = {}
         date_in = self.__c.execute('SELECT datetime_in FROM records')
         for i in date_in.fetchall():
-            if i[0:8]==date:
-                uid = self.__c.execute('SELECT uid FROM records WHERE datetime_in = ?', (i,)).fetchone()[0]
-                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i,)).fetchone()[0]
+            formatted_date = (i[0])[0:8]
+            if formatted_date==date:
+                uid = self.__c.execute('SELECT uid FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
+                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
                 name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
-                key_data[uid] = date_out
-                user_data[name] = key_data
-        return user_data
+                key_data[uid] = date_out+";"+name
+#                user_data[name] = key_data
+        return key_data
 
 
     def list_slot_from_name(self, name):
@@ -286,9 +297,9 @@ class ASRSDataBase:
         key_list ={}
         uid = self.__c.execute('SELECT uid FROM ocr_table WHERE name = ?', (name,))
         for i in uid.fetchall():
-            date_in = self.__c.execute('SELECT datetime_in FROM current WHERE uid = ?', (i,)).fetchone()[0]
-            date_out = self.return_date_out(uid)
-            key_list[date_in] = date_out
-            user_list[uid] = key_list
-        return user_list
+            date_in = self.__c.execute('SELECT datetime_in FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
+            date_out = self.__c.execute('SELECT datetime_out FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
+            key_list[i[0]] = date_in+";"+date_out
+#            user_list[i[0]] = key_list
+        return key_list
 

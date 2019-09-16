@@ -24,12 +24,12 @@ class OCR:
             coords = (20, 25, 310, 210)
             image_obj = Image.open(image)
             cropped_image = image_obj.crop(coords)
-            return cropped_image.save('cropped_usb1_img.jpg')
+            return cropped_image.save(image)
         else:
-            coords = (30, 20, 295, 180) #1 -- (20, 18, 295, 180)
+            coords = (30, 20, 295, 180)
             image_obj = Image.open(image)
             cropped_image = image_obj.crop(coords)
-            return cropped_image.save('cropped_usb2_img.jpg')
+            return cropped_image.save(image)
 
 
     def capture_photo(self, image_filename):

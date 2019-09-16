@@ -1,0 +1,16 @@
+[Unit]
+Description=Start ASRS server
+After=multi-user.target
+
+[Service]
+Restart=on-failure
+RestartSec=60
+ExecStartPre=/bin/bash -c '/bin/journalctl -b -u systemd-timesyncd | /bin/grep/ -q "systemd-timesyncd.* Synchronized to time server"
+ExecStart=/home/pi/asrs.sh
+WorkingDirectory=/home/pi/
+SyslogIdentifier=DustSensor
+User=pi
+Group=pi
+
+[Install]
+WantedBy=multi-user.target
