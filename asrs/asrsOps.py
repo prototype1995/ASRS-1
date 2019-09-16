@@ -366,3 +366,15 @@ def list_all_users_by_name(name):
     user_list = db.list_slot_from_name(name)
     content = json.dumps(user_list)
     return content
+
+
+def list_all_users_between_dates(date1, date2):
+    """
+    Method to list users b/w dates.
+    Args : Date1, Date2
+    Returns : {uid : name;dob;id;company;validity;date_in;date_out}
+    """
+    user_data = db.list_all_users_between_dates(date1, date2)
+    content = json.dumps(user_data)
+    return content
+

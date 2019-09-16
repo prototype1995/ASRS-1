@@ -286,6 +286,7 @@ class ASRSDataBase:
                 name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
                 key_data[uid] = date_out+";"+name
 #                user_data[name] = key_data
+#        logger.info("Data Retrieved by date as {uid : date_out;name} - {}".format(key_data))
         return key_data
 
 
@@ -301,5 +302,28 @@ class ASRSDataBase:
             date_out = self.__c.execute('SELECT datetime_out FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
             key_list[i[0]] = date_in+";"+date_out
 #            user_list[i[0]] = key_list
+#        logger.info("Data Retrieved by name as {uid : date_in;date_out} - {}".format(key_list))
         return key_list
 
+
+    def list_all_users_between_dates(self, date1, date2):
+        """
+        Method to list user datas b/w supplied dates.
+        Params : date
+        Returns : {uid : name;dob;id;company;validity;date_in;date_out;}
+        """
+        key_data = {}
+        date_in = self.__c.execute('SELECT datetime_in FROM records')
+        for i in date_in.fetchall():
+            formatted_date = (i[0])[0:8]
+            if (date1<=formatted_date and date2>=formatted_date):
+                uid = self.__c.execute('SELECT uid FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
+                name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
+                dob = self.__c.execute('SELECT dob FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
+                id = self.__c.execute('SELECT id FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
+                company = self.__c.execute('SELECT company FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
+                validity = self.__c.execute('SELECT validity FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
+                date_in = self.__c.execute('SELECT datetime_in FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
+                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
+                key_data[uid] = name+";"+dob+";"+id+";"+company+";"+validity+";"+date_in+";"+date_out
+        return key_data
