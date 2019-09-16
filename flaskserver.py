@@ -575,8 +575,8 @@ if __name__ == "__main__":
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
-        logger.info("Server started - %s:%s"%(ip, 8888))
-        app.run(host=ip, port=8888, debug=True)
+        logger.info("Server started - %s:%s"%(ip, 9000))
+        app.run(host=ip, port=9000, debug=True)
 
     except OSError as err:
         logger.error(err)
