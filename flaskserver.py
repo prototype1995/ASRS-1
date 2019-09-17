@@ -259,6 +259,12 @@ responses = { 'INIT_STORE'   : {
                     'response-bad': 406,
                     'content-type': 'application/json'
                     },
+         'SHORTLSBYDATES':{
+                    'cmd': 'get_short_list_between_dates()',
+                    'response-good': 200,
+                    'response-bad': 406,
+                    'content-type': 'application/json'
+                    },
          'DAILYACTS':{
                     'cmd': 'get_user_list_by_date()',
                     'response-good': 200,
@@ -445,16 +451,30 @@ def get_user_list_by_date():
 
 def get_users_between_dates():
     """
+    Method to list users b/w given dates.
     """
     date1 = request.args.get('date1')
     date2 = request.args.get('date2')
-#    try:
-    content = asrs.list_all_users_between_dates(date1, date2)
-    return(True, bytes(content, "UTF-8"))
-#    except:
-#        logger.error("Invalid Date provided - {}".format(date))
-#        return(False, bytes("-1", "UTF-8"))
+    try:
+        content = asrs.list_all_users_between_dates(date1, date2)
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.error("Invalid Dates provided - {} & {}".format(date1, date2))
+        return(False, bytes("-1", "UTF-8"))
 
+
+def get_short_list_between_dates():
+    """
+    Method to show a short list of users n/w given dates.
+    """
+    date1 = request.args.get('date1')
+    date2 = request.args.get('date2')
+    try:
+        content = asrs.short_list_users_between_dates(date1, date2)
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.error("Invalid Dates provided - {} & {}".format(date1, date2))
+        return(False, bytes("-1", "UTF-8"))
 
 
 def get_count():

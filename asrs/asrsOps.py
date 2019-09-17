@@ -378,3 +378,15 @@ def list_all_users_between_dates(date1, date2):
     content = json.dumps(user_data)
     return content
 
+
+def short_list_users_between_dates(date1, date2):
+    """
+    Method to list users b/w dates.
+    Args : Date1, Date2
+    Returns : {uid : name;date_in;date_out}
+    """
+    user_data = db.short_list__users_between_dates(date1, date2)
+    content = json.dumps(user_data)
+    return content
+
+

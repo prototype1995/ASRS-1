@@ -262,10 +262,11 @@ class ASRSDataBase:
         """
         Returns currently stored slot_id and uid.
         """
-        current_users = self.__c.execute('SELECT slot_id,uid FROM current WHERE uid != "" ORDER BY slot_id')
+        current_users = self.__c.execute('SELECT uid,datetime_in FROM current WHERE uid != "" ORDER BY slot_id')
         d = {}
-        for slot_id, uid in current_users.fetchall():
-            d[slot_id] = uid
+        for uid,date_in in current_users.fetchall():
+            name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
+            d[uid] = name+";"+date_in
         return d
 
 
@@ -327,3 +328,22 @@ class ASRSDataBase:
                 date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
                 key_data[uid] = name+";"+dob+";"+id+";"+company+";"+validity+";"+date_in+";"+date_out
         return key_data
+
+
+    def short_list__users_between_dates(self, date1, date2):
+        """
+        Method to show a short list of user datas b/w supplied dates.
+        Params : date
+        Returns : {uid : name;date_in;date_out;}
+        """
+        user_data = {}
+        date_in = self.__c.execute('SELECT datetime_in FROM records')
+        for i in date_in.fetchall():
+            formatted_date = (i[0])[0:8]
+            if (date1<=formatted_date and date2>=formatted_date):
+                uid = self.__c.execute('SELECT uid FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
+                name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
+                date_in = self.__c.execute('SELECT datetime_in FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
+                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
+                user_data[uid] = name+";"+date_in+";"+date_out
+        return user_data
