@@ -63,12 +63,12 @@ offset_storage = config.getfloat('SLOTS', 'offset_storage')
 offset_retrieval = config.getfloat('SLOTS', 'offset_retrieval')
 cardTray_pitch = config.getfloat('SLOTS', 'cardTray_pitch')
 
-logger.info("Intial Homing axes commented for app testing...")
+logger.info("Intial Homing axes...")
 
-#m2.go_home(delay=0.0001)
-#m1.go_home(delay=0.0001)
+m2.go_home(delay=0.0001)
+m1.go_home(delay=0.0001)
 
-#logger.info("Initial Homing axes complete.")
+logger.info("Initial Homing axes complete.")
 
 ocr = asrsOCR.OCR()
 slot = asrsSlots.Slot((0, '', 0, '', ''))
