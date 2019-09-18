@@ -285,7 +285,7 @@ class ASRSDataBase:
                 uid = self.__c.execute('SELECT uid FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
                 date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
                 name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
-                key_data[uid] = date_out+";"+name
+                key_data[uid] = name+";"+date_out
 #                user_data[name] = key_data
 #        logger.info("Data Retrieved by date as {uid : date_out;name} - {}".format(key_data))
         return key_data

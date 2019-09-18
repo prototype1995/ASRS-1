@@ -37,6 +37,8 @@ import os
 from asrs import asrsOps as asrs
 from shutil import copyfile
 from datetime import datetime
+import pyudev
+import psutil
 
 
 UPLOAD_FOLDER = 'user_files'
@@ -306,6 +308,18 @@ responses = { 'INIT_STORE'   : {
                    'response-good': 200,
                    'response-bad': 406,
                    'content-type': 'text/plain'
+                   },
+         'REPORT':{
+                   'cmd': 'copy_server_folder()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                   },
+         'UPDATESERVER':{
+                   'cmd': 'update_server()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
                    }
       }
 
@@ -355,6 +369,41 @@ def img_handler():
         #file.save("user_files/"+filename)
         response = Response(response=filename, status=200)
     return response
+
+
+def update_server():
+    """
+    Method to update server code.
+    """
+    try:
+        os.system('git config user.email "bas3dp@gmail.com"')
+        os.system('git config user.name "BAS3DP"')
+        os.system('git pull https://BAS3DP:{}{}{}plaabs3dp@github.com/prototype1995/ASRS-1.git master')
+        logger.info("Server updated successfully.")
+        return(True, bytes("OK","UTF-8"))
+    except:
+        logger.info("Check internet connection.")
+        return(False, bytes("-1","UTF-8"))
+
+
+def copy_server_folder():
+    """
+    Method to copy the asrs folder to the external device.
+    """
+    try:
+        context= pyudev.Context()
+        removable = [device for device in context.list_devices(subsystem='block', DEVTYPE='disk') if device.attributes.asstring('removable') == "1"]
+        for device in removable:
+            partitions = [device.device_node for device in context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
+            for p in psutil.disk_partitions():
+                if p.device in partitions:
+                    removable_device = p.mountpoint
+        os.system('cp -r /home/pi/Project/ASRS3 {}'.format(removable_device))
+        logger.info("Files copied to {}".removable_device)
+        return(True, bytes("OK","UTF-8"))
+    except:
+        logger.info("Device not detected...Copying files failed.")
+        return(False, bytes("-1","UTF-8"))
 
 
 def set_time():
