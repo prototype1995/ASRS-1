@@ -398,7 +398,7 @@ def copy_server_folder():
             for p in psutil.disk_partitions():
                 if p.device in partitions:
                     removable_device = p.mountpoint
-        os.system('cp -r /home/pi/Project/ASRS3 {}'.format(removable_device))
+        os.system('cp -r /home/pi/Project/ASRS3/server {}'.format(removable_device))
         logger.info("Files copied to {}".removable_device)
         return(True, bytes("OK","UTF-8"))
     except:
@@ -490,12 +490,12 @@ def get_user_list_by_date():
     Method to list users by date.
     """
     date = request.args.get('date')
-    try:
-        content = asrs.list_all_users_by_date(date)
-        return(True, bytes(content, "UTF-8"))
-    except:
-        logger.error("Invalid Date provided - {}".format(date))
-        return(False, bytes("-1", "UTF-8"))
+#    try:
+    content = asrs.list_all_users_by_date(date)
+    return(True, bytes(content, "UTF-8"))
+#    except:
+#        logger.error("Invalid Date provided - {}".format(date))
+#        return(False, bytes("-1", "UTF-8"))
 
 
 def get_users_between_dates():

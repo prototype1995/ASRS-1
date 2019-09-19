@@ -266,8 +266,23 @@ class ASRSDataBase:
         d = {}
         for uid,date_in in current_users.fetchall():
             name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
-            d[uid] = name+";"+date_in
+            formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
+            d[uid] = name+";"+formatted_date_in
         return d
+
+
+    def check_date_in_current(self, date):
+        """
+        """
+        current_date_in = self.__c.execute('SELECT datetime_in FROM current')
+        for j in current_date_in.fetchall():
+            if j[0]==date:
+                formatted_date_out = "-/-/-"
+                break
+            else:
+                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (date,)).fetchone()[0]
+                formatted_date_out = date_out[0:4]+"/"+date_out[4:6]+"/"+date_out[6:8]+" at "+date_out[8:10]+":"+date_out[10:12]
+        return formatted_date_out
 
 
     def list_all_users_by_date(self, date):
@@ -278,14 +293,15 @@ class ASRSDataBase:
         """
         user_data = {}
         key_data = {}
-        date_in = self.__c.execute('SELECT datetime_in FROM records')
+        date_in = self.__c.execute('SELECT datetime_in FROM records ORDER BY datetime_in DESC')
         for i in date_in.fetchall():
             formatted_date = (i[0])[0:8]
             if formatted_date==date:
+                formatted_date_in = i[0][0:4]+"/"+i[0][4:6]+"/"+i[0][6:8]+" at "+i[0][8:10]+":"+i[0][10:12]
                 uid = self.__c.execute('SELECT uid FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
-                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
+                date_out = self.check_date_in_current(i[0])
                 name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
-                key_data[uid] = name+";"+date_out
+                key_data[uid] = name+";"+formatted_date_in+";"+date_out
 #                user_data[name] = key_data
 #        logger.info("Data Retrieved by date as {uid : date_out;name} - {}".format(key_data))
         return key_data
@@ -300,8 +316,9 @@ class ASRSDataBase:
         uid = self.__c.execute('SELECT uid FROM ocr_table WHERE name = ?', (name,))
         for i in uid.fetchall():
             date_in = self.__c.execute('SELECT datetime_in FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
-            date_out = self.__c.execute('SELECT datetime_out FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
-            key_list[i[0]] = date_in+";"+date_out
+            formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
+            date_out = self.check_date_in_current(date_in)
+            key_list[i[0]] = formatted_date_in+";"+date_out
 #            user_list[i[0]] = key_list
 #        logger.info("Data Retrieved by name as {uid : date_in;date_out} - {}".format(key_list))
         return key_list
@@ -325,8 +342,9 @@ class ASRSDataBase:
                 company = self.__c.execute('SELECT company FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
                 validity = self.__c.execute('SELECT validity FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
                 date_in = self.__c.execute('SELECT datetime_in FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
-                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
-                key_data[uid] = name+";"+dob+";"+id+";"+company+";"+validity+";"+date_in+";"+date_out
+                formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
+                date_out = self.check_date_in_current(i[0])
+                key_data[uid] = name+";"+dob+";"+id+";"+company+";"+validity+";"+formatted_date_in+";"+date_out
         return key_data
 
 
@@ -344,6 +362,7 @@ class ASRSDataBase:
                 uid = self.__c.execute('SELECT uid FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
                 name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
                 date_in = self.__c.execute('SELECT datetime_in FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
-                date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (i[0],)).fetchone()[0]
-                user_data[uid] = name+";"+date_in+";"+date_out
+                formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
+                date_out = self.check_date_in_current(i[0])
+                user_data[uid] = name+";"+formatted_date_in+";"+date_out
         return user_data
