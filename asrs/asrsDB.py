@@ -262,7 +262,7 @@ class ASRSDataBase:
         """
         Returns currently stored slot_id and uid.
         """
-        current_users = self.__c.execute('SELECT uid,datetime_in FROM current WHERE uid != "" ORDER BY slot_id')
+        current_users = self.__c.execute('SELECT uid,datetime_in FROM current WHERE uid != "" ORDER BY datetime_in DESC')
         d = {}
         for uid,date_in in current_users.fetchall():
             name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
@@ -331,7 +331,7 @@ class ASRSDataBase:
         Returns : {uid : name;dob;id;company;validity;date_in;date_out;}
         """
         key_data = {}
-        date_in = self.__c.execute('SELECT datetime_in FROM records')
+        date_in = self.__c.execute('SELECT datetime_in FROM records ORDER BY datetime_in DESC')
         for i in date_in.fetchall():
             formatted_date = (i[0])[0:8]
             if (date1<=formatted_date and date2>=formatted_date):
@@ -355,7 +355,7 @@ class ASRSDataBase:
         Returns : {uid : name;date_in;date_out;}
         """
         user_data = {}
-        date_in = self.__c.execute('SELECT datetime_in FROM records')
+        date_in = self.__c.execute('SELECT datetime_in FROM records ORDER BY datetime_in DESC')
         for i in date_in.fetchall():
             formatted_date = (i[0])[0:8]
             if (date1<=formatted_date and date2>=formatted_date):
@@ -366,3 +366,14 @@ class ASRSDataBase:
                 date_out = self.check_date_in_current(i[0])
                 user_data[uid] = name+";"+formatted_date_in+";"+date_out
         return user_data
+
+
+    def send_first_last_date(self):
+        """
+        Method to send first and last dates from stored date & time.
+        """
+        date_val = {}
+        first_date = self.__c.execute('SELECT MIN(datetime_in) FROM records').fetchone()[0]
+        last_date = self.__c.execute('SELECT MAX(datetime_in) FROM records').fetchone()[0]
+        date_val[first_date] = last_date
+        return date_val

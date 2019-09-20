@@ -285,6 +285,12 @@ responses = { 'INIT_STORE'   : {
                     'response-bad': 406,
                     'content-type': 'application/json'
                     },
+         'FIRSTLAST':{
+                    'cmd': 'asrs.send_firstLast_dates()',
+                    'response-good': 200,
+                    'response-bad': 406,
+                    'content-type': 'application/json'
+                    },
          'CROP_COORDS':{
                      'cmd': 'crop_image_coords()',
                      'response-good': 200,
@@ -310,7 +316,7 @@ responses = { 'INIT_STORE'   : {
                    'content-type': 'text/plain'
                    },
          'REPORT':{
-                   'cmd': 'copy_server_folder()',
+                   'cmd': 'copy_log_file()',
                    'response-good': 200,
                    'response-bad': 406,
                    'content-type': 'text/plain'
@@ -386,9 +392,9 @@ def update_server():
         return(False, bytes("-1","UTF-8"))
 
 
-def copy_server_folder():
+def copy_log_file():
     """
-    Method to copy the asrs folder to the external device.
+    Method to copy the log file to the external device.
     """
     try:
         context= pyudev.Context()
@@ -398,8 +404,12 @@ def copy_server_folder():
             for p in psutil.disk_partitions():
                 if p.device in partitions:
                     removable_device = p.mountpoint
-        os.system('cp -r /home/pi/Project/ASRS3/server {}'.format(removable_device))
-        logger.info("Files copied to {}".removable_device)
+
+        logger.info("File testing/log.log is converting to testing/asrs_log.pdf")
+        os.system('enscript -p testing/output.ps testing/log.log')
+        os.system('ps2pdf testing/output.ps testing/asrs_log.pdf')
+        os.system('cp /home/pi/Project/ASRS3/server/testing/asrs_log.pdf {}'.format(removable_device))
+        logger.info("File successfully converted and copied to connected device")
         return(True, bytes("OK","UTF-8"))
     except:
         logger.info("Device not detected...Copying files failed.")

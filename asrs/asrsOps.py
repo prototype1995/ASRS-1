@@ -390,3 +390,14 @@ def short_list_users_between_dates(date1, date2):
     return content
 
 
+def send_firstLast_dates():
+    """
+    Method to send first and last dates.
+    Args : None.
+    Returns : {first_date : last_date}
+    """
+    user_data = db.send_first_last_date()
+    content = json.dumps(user_data)
+    return(True, bytes(content, "UTF-8"))
+
+
