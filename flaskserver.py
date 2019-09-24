@@ -546,12 +546,12 @@ def list_slot_from_mobile():
     Method to list users by name.
     """
     mob = request.args.get('mobile')
-    try:
-        content = asrs.list_all_users_by_mobile(mob)
-        return(True, bytes(content, "UTF-8"))
-    except:
-        logger.error("Invalid Mobile Number provided - {}".format(mob))
-        return(False, bytes("-1", "UTF-8"))
+#    try:
+    content = asrs.list_all_users_by_mobile(mob)
+    return(True, bytes(content, "UTF-8"))
+#    except:
+#        logger.error("Invalid Mobile Number provided - {}".format(mob))
+#        return(False, bytes("-1", "UTF-8"))
 
 
 def sent_ret_date():

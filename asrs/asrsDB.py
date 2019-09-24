@@ -286,6 +286,7 @@ class ASRSDataBase:
 
     def check_date_in_current(self, date):
         """
+        Check date_in in current table.
         """
         current_date_in = self.__c.execute('SELECT datetime_in FROM current')
         for j in current_date_in.fetchall():
@@ -296,6 +297,19 @@ class ASRSDataBase:
                 date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (date,)).fetchone()[0]
                 formatted_date_out = date_out[0:4]+"/"+date_out[4:6]+"/"+date_out[6:8]+" at "+date_out[8:10]+":"+date_out[10:12]
         return formatted_date_out
+
+
+    def check_uid_in_current(self, uid):
+        """
+        Check UID in current table.
+        """
+        current_uid = self.__c.execute('SELECT uid FROM current')
+        for j in current_uid.fetchall():
+            if j[0]==uid:
+                return uid
+            else:
+                uid = uid
+        return "NULL"
 
 
     def list_all_users_by_date(self, date):
@@ -339,10 +353,14 @@ class ASRSDataBase:
         key_list ={}
         uid = self.__c.execute('SELECT uid FROM records WHERE mobile_num = ?', (mob,))
         for i in uid.fetchall():
-            date_in = self.__c.execute('SELECT datetime_in FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
-            formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
-            date_out = self.check_date_in_current(date_in)
-            key_list[i[0]] = formatted_date_in+";"+date_out
+            UID = self.check_uid_in_current(i[0])
+            if UID == "NULL":
+                key_list = {}
+            else:
+                date_in = self.__c.execute('SELECT datetime_in FROM records WHERE uid = ?', (UID,)).fetchone()[0]
+                formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
+                date_out = self.check_date_in_current(date_in)
+                key_list[i[0]] = formatted_date_in+";"+date_out
         return key_list
 
 

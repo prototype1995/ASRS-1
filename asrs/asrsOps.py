@@ -372,7 +372,7 @@ def list_all_users_by_name(name):
     return content
 
 
-def list_all_users_by_mob(mob):
+def list_all_users_by_mobile(mob):
     """
     Method to list users by mobile number.
     Args : Name
