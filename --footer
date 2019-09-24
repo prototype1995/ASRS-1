@@ -1,0 +1,2221 @@
+%!PS-Adobe-3.0
+%%BoundingBox: 18 36 577 806
+%%Title: Enscript Output
+%%Creator: GNU Enscript 1.6.5.90
+%%CreationDate: Fri Sep 20 22:20:47 2019
+%%Orientation: Portrait
+%%Pages: (atend)
+%%DocumentMedia: A4 595 842 0 () ()
+%%DocumentNeededResources: (atend)
+%%EndComments
+%%BeginProlog
+%%BeginResource: procset Enscript-Prolog 1.6.5 90
+%
+% Procedures.
+%
+
+/_S {	% save current state
+  /_s save def
+} def
+/_R {	% restore from saved state
+  _s restore
+} def
+
+/S {	% showpage protecting gstate
+  gsave
+  showpage
+  grestore
+} bind def
+
+/MF {	% fontname newfontname -> -	make a new encoded font
+  /newfontname exch def
+  /fontname exch def
+
+  /fontdict fontname findfont def
+  /newfont fontdict maxlength dict def
+
+  fontdict {
+    exch
+    dup /FID eq {
+      % skip FID pair
+      pop pop
+    } {
+      % copy to the new font dictionary
+      exch newfont 3 1 roll put
+    } ifelse
+  } forall
+
+  newfont /FontName newfontname put
+
+  % insert only valid encoding vectors
+  encoding_vector length 256 eq {
+    newfont /Encoding encoding_vector put
+  } if
+
+  newfontname newfont definefont pop
+} def
+
+/MF_PS { % fontname newfontname -> -	make a new font preserving its enc
+  /newfontname exch def
+  /fontname exch def
+
+  /fontdict fontname findfont def
+  /newfont fontdict maxlength dict def
+
+  fontdict {
+    exch
+    dup /FID eq {
+      % skip FID pair
+      pop pop
+    } {
+      % copy to the new font dictionary
+      exch newfont 3 1 roll put
+    } ifelse
+  } forall
+
+  newfont /FontName newfontname put
+
+  newfontname newfont definefont pop
+} def
+
+/SF { % fontname width height -> -	set a new font
+  /height exch def
+  /width exch def
+
+  findfont
+  [width 0 0 height 0 0] makefont setfont
+} def
+
+/SUF { % fontname width height -> -	set a new user font
+  /height exch def
+  /width exch def
+
+  /F-gs-user-font MF
+  /F-gs-user-font width height SF
+} def
+
+/SUF_PS { % fontname width height -> -	set a new user font preserving its enc
+  /height exch def
+  /width exch def
+
+  /F-gs-user-font MF_PS
+  /F-gs-user-font width height SF
+} def
+
+/M {moveto} bind def
+/s {show} bind def
+
+/Box {	% x y w h -> -			define box path
+  /d_h exch def /d_w exch def /d_y exch def /d_x exch def
+  d_x d_y  moveto
+  d_w 0 rlineto
+  0 d_h rlineto
+  d_w neg 0 rlineto
+  closepath
+} def
+
+/bgs {	% x y height blskip gray str -> -	show string with bg color
+  /str exch def
+  /gray exch def
+  /blskip exch def
+  /height exch def
+  /y exch def
+  /x exch def
+
+  gsave
+    x y blskip sub str stringwidth pop height Box
+    gray setgray
+    fill
+  grestore
+  x y M str s
+} def
+
+/bgcs { % x y height blskip red green blue str -> -  show string with bg color
+  /str exch def
+  /blue exch def
+  /green exch def
+  /red exch def
+  /blskip exch def
+  /height exch def
+  /y exch def
+  /x exch def
+
+  gsave
+    x y blskip sub str stringwidth pop height Box
+    red green blue setrgbcolor
+    fill
+  grestore
+  x y M str s
+} def
+
+% Highlight bars.
+/highlight_bars {	% nlines lineheight output_y_margin gray -> -
+  gsave
+    setgray
+    /ymarg exch def
+    /lineheight exch def
+    /nlines exch def
+
+    % This 2 is just a magic number to sync highlight lines to text.
+    0 d_header_y ymarg sub 2 sub translate
+
+    /cw d_output_w cols div def
+    /nrows d_output_h ymarg 2 mul sub lineheight div cvi def
+
+    % for each column
+    0 1 cols 1 sub {
+      cw mul /xp exch def
+
+      % for each rows
+      0 1 nrows 1 sub {
+        /rn exch def
+        rn lineheight mul neg /yp exch def
+        rn nlines idiv 2 mod 0 eq {
+	  % Draw highlight bar.  4 is just a magic indentation.
+	  xp 4 add yp cw 8 sub lineheight neg Box fill
+	} if
+      } for
+    } for
+
+  grestore
+} def
+
+% Line highlight bar.
+/line_highlight {	% x y width height gray -> -
+  gsave
+    /gray exch def
+    Box gray setgray fill
+  grestore
+} def
+
+% Column separator lines.
+/column_lines {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h translate
+    /cw d_output_w cols div def
+    1 1 cols 1 sub {
+      cw mul 0 moveto
+      0 d_output_h rlineto stroke
+    } for
+  grestore
+} def
+
+% Column borders.
+/column_borders {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h moveto
+    0 d_output_h rlineto
+    d_output_w 0 rlineto
+    0 d_output_h neg rlineto
+    closepath stroke
+  grestore
+} def
+
+% Do the actual underlay drawing
+/draw_underlay {
+  ul_style 0 eq {
+    ul_str true charpath stroke
+  } {
+    ul_str show
+  } ifelse
+} def
+
+% Underlay
+/underlay {	% - -> -
+  gsave
+    0 d_page_h translate
+    d_page_h neg d_page_w atan rotate
+
+    ul_gray setgray
+    ul_font setfont
+    /dw d_page_h dup mul d_page_w dup mul add sqrt def
+    ul_str stringwidth pop dw exch sub 2 div ul_h_ptsize -2 div moveto
+    draw_underlay
+  grestore
+} def
+
+/user_underlay {	% - -> -
+  gsave
+    ul_x ul_y translate
+    ul_angle rotate
+    ul_gray setgray
+    ul_font setfont
+    0 0 ul_h_ptsize 2 div sub moveto
+    draw_underlay
+  grestore
+} def
+
+% Page prefeed
+/page_prefeed {		% bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} def
+
+% Wrapped line markers
+/wrapped_line_mark {	% x y charwith charheight type -> -
+  /type exch def
+  /h exch def
+  /w exch def
+  /y exch def
+  /x exch def
+
+  type 2 eq {
+    % Black boxes (like TeX does)
+    gsave
+      0 setlinewidth
+      x w 4 div add y M
+      0 h rlineto w 2 div 0 rlineto 0 h neg rlineto
+      closepath fill
+    grestore
+  } {
+    type 3 eq {
+      % Small arrows
+      gsave
+        .2 setlinewidth
+        x w 2 div add y h 2 div add M
+        w 4 div 0 rlineto
+        x w 4 div add y lineto stroke
+
+        x w 4 div add w 8 div add y h 4 div add M
+        x w 4 div add y lineto
+	w 4 div h 8 div rlineto stroke
+      grestore
+    } {
+      % do nothing
+    } ifelse
+  } ifelse
+} def
+
+% EPSF import.
+
+/BeginEPSF {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack
+  userdict begin
+  /showpage { } def
+  0 setgray 0 setlinecap
+  1 setlinewidth 0 setlinejoin
+  10 setmiterlimit [ ] 0 setdash newpath
+  /languagelevel where {
+    pop languagelevel
+    1 ne {
+      false setstrokeadjust false setoverprint
+    } if
+  } if
+} bind def
+
+/EndEPSF {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+%%EndResource
+%%BeginResource: procset Enscript-Encoding-88591 1.6.5 90
+/encoding_vector [
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclam       	/quotedbl     	/numbersign   	
+/dollar       	/percent      	/ampersand    	/quoteright   	
+/parenleft    	/parenright   	/asterisk     	/plus         	
+/comma        	/hyphen       	/period       	/slash        	
+/zero         	/one          	/two          	/three        	
+/four         	/five         	/six          	/seven        	
+/eight        	/nine         	/colon        	/semicolon    	
+/less         	/equal        	/greater      	/question     	
+/at           	/A            	/B            	/C            	
+/D            	/E            	/F            	/G            	
+/H            	/I            	/J            	/K            	
+/L            	/M            	/N            	/O            	
+/P            	/Q            	/R            	/S            	
+/T            	/U            	/V            	/W            	
+/X            	/Y            	/Z            	/bracketleft  	
+/backslash    	/bracketright 	/asciicircum  	/underscore   	
+/quoteleft    	/a            	/b            	/c            	
+/d            	/e            	/f            	/g            	
+/h            	/i            	/j            	/k            	
+/l            	/m            	/n            	/o            	
+/p            	/q            	/r            	/s            	
+/t            	/u            	/v            	/w            	
+/x            	/y            	/z            	/braceleft    	
+/bar          	/braceright   	/tilde        	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclamdown   	/cent         	/sterling     	
+/currency     	/yen          	/brokenbar    	/section      	
+/dieresis     	/copyright    	/ordfeminine  	/guillemotleft	
+/logicalnot   	/hyphen       	/registered   	/macron       	
+/degree       	/plusminus    	/twosuperior  	/threesuperior	
+/acute        	/mu           	/paragraph    	/bullet       	
+/cedilla      	/onesuperior  	/ordmasculine 	/guillemotright	
+/onequarter   	/onehalf      	/threequarters	/questiondown 	
+/Agrave       	/Aacute       	/Acircumflex  	/Atilde       	
+/Adieresis    	/Aring        	/AE           	/Ccedilla     	
+/Egrave       	/Eacute       	/Ecircumflex  	/Edieresis    	
+/Igrave       	/Iacute       	/Icircumflex  	/Idieresis    	
+/Eth          	/Ntilde       	/Ograve       	/Oacute       	
+/Ocircumflex  	/Otilde       	/Odieresis    	/multiply     	
+/Oslash       	/Ugrave       	/Uacute       	/Ucircumflex  	
+/Udieresis    	/Yacute       	/Thorn        	/germandbls   	
+/agrave       	/aacute       	/acircumflex  	/atilde       	
+/adieresis    	/aring        	/ae           	/ccedilla     	
+/egrave       	/eacute       	/ecircumflex  	/edieresis    	
+/igrave       	/iacute       	/icircumflex  	/idieresis    	
+/eth          	/ntilde       	/ograve       	/oacute       	
+/ocircumflex  	/otilde       	/odieresis    	/divide       	
+/oslash       	/ugrave       	/uacute       	/ucircumflex  	
+/udieresis    	/yacute       	/thorn        	/ydieresis    	
+] def
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Courier
+/HFpt_w 10 def
+/HFpt_h 10 def
+/Courier-Bold /HF-gs-font MF
+/HF /HF-gs-font findfont [HFpt_w 0 0 HFpt_h 0 0] makefont def
+/Courier /F-gs-font MF
+/F-gs-font 10 10 SF
+/#copies 1 def
+% Pagedevice definitions:
+gs_languagelevel 1 gt {
+  <<
+    /PageSize [595 842] 
+  >> setpagedevice
+} if
+%%BeginResource: procset Enscript-Header-enscript 1.6.5 90
+%%IncludeResource: font Times-Bold
+%%IncludeResource: font Times-Roman
+
+% Fonts.
+/Times-Bold /HeaderFont-Bold MF
+/HeaderDateF /HeaderFont-Bold findfont 12 scalefont def
+
+/Times-Roman /HeaderFont-Times MF
+/HeaderHDRF /HeaderFont-Times findfont 14 scalefont def
+
+/HeaderPageNumF /Helvetica-Bold findfont 28.8 scalefont def
+
+/do_header {	% print enscript header
+  gsave
+    d_header_x d_header_y translate
+
+    % light bar
+    0 0 d_header_w d_header_h 2 div Box
+    .95 setgray fill
+
+    % dark gray boxes
+    /dbw d_header_h 2 mul def	% dark box width
+    /dbc .7 def			% dark box color
+
+    % left dark box.
+    0 0 dbw d_header_h Box
+    dbc setgray fill
+
+    0 setgray 
+    HeaderDateF setfont
+    moddatestr dup stringwidth pop dbw exch sub 2 div 
+    d_header_h 2 div 2 add moveto show
+    modtimestr dup stringwidth pop dbw exch sub 2 div 
+    d_header_h 5 div moveto show
+
+    % right dark box
+    d_header_w dbw sub 0 dbw d_header_h Box
+    dbc setgray fill
+
+    HeaderPageNumF setfont
+    1 setgray
+    pagenumstr dup
+    stringwidth pop dbw exch sub 2 div d_header_w dbw sub add
+    d_header_h .2 mul moveto show
+
+    % filename
+    0 setgray 
+    HeaderHDRF setfont
+    d_header_w fname stringwidth pop sub 2 div d_header_h 8 div moveto
+    fname show
+
+    % user supplied header string.
+    user_header_p {
+      /h d_header_h 8 div 5 mul def
+
+      % Implement strict enscript compatibility.
+      user_header_center_str () eq user_header_right_str () eq and {
+        d_header_w user_header_left_str stringwidth pop sub 2 div 
+        h moveto user_header_left_str show
+      } {
+        dbw 5 add h moveto user_header_left_str show
+
+        d_header_w user_header_center_str stringwidth pop sub 2 div 
+        h moveto user_header_center_str show
+
+	d_header_w dbw sub 5 sub user_header_right_str stringwidth pop
+	sub h moveto user_header_right_str show
+      } ifelse
+    } if
+
+  grestore
+} def
+%%EndResource
+/d_page_w 559 def
+/d_page_h 770 def
+/d_header_x 0 def
+/d_header_y 734 def
+/d_header_w 559 def
+/d_header_h 36 def
+/d_footer_x 0 def
+/d_footer_y 0 def
+/d_footer_w 559 def
+/d_footer_h 0 def
+/d_output_w 559 def
+/d_output_h 734 def
+/cols 1 def
+%%EndSetup
+%%Page: (1) 1
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 1 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (1) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(%!PS-Adobe-3.0) s
+5 710 M
+(%%BoundingBox: 18 36 577 806) s
+5 699 M
+(%%Title: Enscript Output) s
+5 688 M
+(%%Creator: GNU Enscript 1.6.5.90) s
+5 677 M
+(%%CreationDate: Fri Sep 20 22:18:47 2019) s
+5 666 M
+(%%Orientation: Portrait) s
+5 655 M
+(%%Pages: \(atend\)) s
+5 644 M
+(%%DocumentMedia: A4 595 842 0 \(\) \(\)) s
+5 633 M
+(%%DocumentNeededResources: \(atend\)) s
+5 622 M
+(%%EndComments) s
+5 611 M
+(%%BeginProlog) s
+5 600 M
+(%%BeginResource: procset Enscript-Prolog 1.6.5 90) s
+5 589 M
+(%) s
+5 578 M
+(% Procedures.) s
+5 567 M
+(%) s
+5 545 M
+(/_S {   % save current state) s
+5 534 M
+(  /_s save def) s
+5 523 M
+(} def) s
+5 512 M
+(/_R {   % restore from saved state) s
+5 501 M
+(  _s restore) s
+5 490 M
+(} def) s
+5 468 M
+(/S {    % showpage protecting gstate) s
+5 457 M
+(  gsave) s
+5 446 M
+(  showpage) s
+5 435 M
+(  grestore) s
+5 424 M
+(} bind def) s
+5 402 M
+(/MF {   % fontname newfontname -> -     make a new encoded font) s
+5 391 M
+(  /newfontname exch def) s
+5 380 M
+(  /fontname exch def) s
+5 358 M
+(  /fontdict fontname findfont def) s
+5 347 M
+(  /newfont fontdict maxlength dict def) s
+5 325 M
+(  fontdict {) s
+5 314 M
+(    exch) s
+5 303 M
+(    dup /FID eq {) s
+5 292 M
+(      % skip FID pair) s
+5 281 M
+(      pop pop) s
+5 270 M
+(    } {) s
+5 259 M
+(      % copy to the new font dictionary) s
+5 248 M
+(      exch newfont 3 1 roll put) s
+5 237 M
+(    } ifelse) s
+5 226 M
+(  } forall) s
+5 204 M
+(  newfont /FontName newfontname put) s
+5 182 M
+(  % insert only valid encoding vectors) s
+5 171 M
+(  encoding_vector length 256 eq {) s
+5 160 M
+(    newfont /Encoding encoding_vector put) s
+5 149 M
+(  } if) s
+5 127 M
+(  newfontname newfont definefont pop) s
+5 116 M
+(} def) s
+5 94 M
+(/MF_PS { % fontname newfontname -> -    make a new font preserving its enc) s
+5 83 M
+(  /newfontname exch def) s
+5 72 M
+(  /fontname exch def) s
+5 50 M
+(  /fontdict fontname findfont def) s
+5 39 M
+(  /newfont fontdict maxlength dict def) s
+5 17 M
+(  fontdict {) s
+5 6 M
+(    exch) s
+_R
+S
+%%Page: (2) 2
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 2 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (2) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(    dup /FID eq {) s
+5 710 M
+(      % skip FID pair) s
+5 699 M
+(      pop pop) s
+5 688 M
+(    } {) s
+5 677 M
+(      % copy to the new font dictionary) s
+5 666 M
+(      exch newfont 3 1 roll put) s
+5 655 M
+(    } ifelse) s
+5 644 M
+(  } forall) s
+5 622 M
+(  newfont /FontName newfontname put) s
+5 600 M
+(  newfontname newfont definefont pop) s
+5 589 M
+(} def) s
+5 567 M
+(/SF { % fontname width height -> -      set a new font) s
+5 556 M
+(  /height exch def) s
+5 545 M
+(  /width exch def) s
+5 523 M
+(  findfont) s
+5 512 M
+(  [width 0 0 height 0 0] makefont setfont) s
+5 501 M
+(} def) s
+5 479 M
+(/SUF { % fontname width height -> -     set a new user font) s
+5 468 M
+(  /height exch def) s
+5 457 M
+(  /width exch def) s
+5 435 M
+(  /F-gs-user-font MF) s
+5 424 M
+(  /F-gs-user-font width height SF) s
+5 413 M
+(} def) s
+5 391 M
+(/SUF_PS { % fontname width height -> -  set a new user font preserving its enc) s
+5 380 M
+(  /height exch def) s
+5 369 M
+(  /width exch def) s
+5 347 M
+(  /F-gs-user-font MF_PS) s
+5 336 M
+(  /F-gs-user-font width height SF) s
+5 325 M
+(} def) s
+5 303 M
+(/M {moveto} bind def) s
+5 292 M
+(/s {show} bind def) s
+5 270 M
+(/Box {  % x y w h -> -                  define box path) s
+5 259 M
+(  /d_h exch def /d_w exch def /d_y exch def /d_x exch def) s
+5 248 M
+(  d_x d_y  moveto) s
+5 237 M
+(  d_w 0 rlineto) s
+5 226 M
+(  0 d_h rlineto) s
+5 215 M
+(  d_w neg 0 rlineto) s
+5 204 M
+(  closepath) s
+5 193 M
+(} def) s
+5 171 M
+(/bgs {  % x y height blskip gray str -> -       show string with bg color) s
+5 160 M
+(  /str exch def) s
+5 149 M
+(  /gray exch def) s
+5 138 M
+(  /blskip exch def) s
+5 127 M
+(  /height exch def) s
+5 116 M
+(  /y exch def) s
+5 105 M
+(  /x exch def) s
+5 83 M
+(  gsave) s
+5 72 M
+(    x y blskip sub str stringwidth pop height Box) s
+5 61 M
+(    gray setgray) s
+5 50 M
+(    fill) s
+5 39 M
+(  grestore) s
+5 28 M
+(  x y M str s) s
+5 17 M
+(} def) s
+_R
+S
+%%Page: (3) 3
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 3 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (3) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(/bgcs { % x y height blskip red green blue str -> -  show string with bg color) s
+5 710 M
+(  /str exch def) s
+5 699 M
+(  /blue exch def) s
+5 688 M
+(  /green exch def) s
+5 677 M
+(  /red exch def) s
+5 666 M
+(  /blskip exch def) s
+5 655 M
+(  /height exch def) s
+5 644 M
+(  /y exch def) s
+5 633 M
+(  /x exch def) s
+5 611 M
+(  gsave) s
+5 600 M
+(    x y blskip sub str stringwidth pop height Box) s
+5 589 M
+(    red green blue setrgbcolor) s
+5 578 M
+(    fill) s
+5 567 M
+(  grestore) s
+5 556 M
+(  x y M str s) s
+5 545 M
+(} def) s
+5 523 M
+(% Highlight bars.) s
+5 512 M
+(/highlight_bars {       % nlines lineheight output_y_margin gray -> -) s
+5 501 M
+(  gsave) s
+5 490 M
+(    setgray) s
+5 479 M
+(    /ymarg exch def) s
+5 468 M
+(    /lineheight exch def) s
+5 457 M
+(    /nlines exch def) s
+5 435 M
+(    % This 2 is just a magic number to sync highlight lines to text.) s
+5 424 M
+(    0 d_header_y ymarg sub 2 sub translate) s
+5 402 M
+(    /cw d_output_w cols div def) s
+5 391 M
+(    /nrows d_output_h ymarg 2 mul sub lineheight div cvi def) s
+5 369 M
+(    % for each column) s
+5 358 M
+(    0 1 cols 1 sub {) s
+5 347 M
+(      cw mul /xp exch def) s
+5 325 M
+(      % for each rows) s
+5 314 M
+(      0 1 nrows 1 sub {) s
+5 303 M
+(        /rn exch def) s
+5 292 M
+(        rn lineheight mul neg /yp exch def) s
+5 281 M
+(        rn nlines idiv 2 mod 0 eq {) s
+5 270 M
+(          % Draw highlight bar.  4 is just a magic indentation.) s
+5 259 M
+(          xp 4 add yp cw 8 sub lineheight neg Box fill) s
+5 248 M
+(        } if) s
+5 237 M
+(      } for) s
+5 226 M
+(    } for) s
+5 204 M
+(  grestore) s
+5 193 M
+(} def) s
+5 171 M
+(% Line highlight bar.) s
+5 160 M
+(/line_highlight {       % x y width height gray -> -) s
+5 149 M
+(  gsave) s
+5 138 M
+(    /gray exch def) s
+5 127 M
+(    Box gray setgray fill) s
+5 116 M
+(  grestore) s
+5 105 M
+(} def) s
+5 83 M
+(% Column separator lines.) s
+5 72 M
+(/column_lines {) s
+5 61 M
+(  gsave) s
+5 50 M
+(    .1 setlinewidth) s
+5 39 M
+(    0 d_footer_h translate) s
+5 28 M
+(    /cw d_output_w cols div def) s
+5 17 M
+(    1 1 cols 1 sub {) s
+5 6 M
+(      cw mul 0 moveto) s
+_R
+S
+%%Page: (4) 4
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 4 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (4) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(      0 d_output_h rlineto stroke) s
+5 710 M
+(    } for) s
+5 699 M
+(  grestore) s
+5 688 M
+(} def) s
+5 666 M
+(% Column borders.) s
+5 655 M
+(/column_borders {) s
+5 644 M
+(  gsave) s
+5 633 M
+(    .1 setlinewidth) s
+5 622 M
+(    0 d_footer_h moveto) s
+5 611 M
+(    0 d_output_h rlineto) s
+5 600 M
+(    d_output_w 0 rlineto) s
+5 589 M
+(    0 d_output_h neg rlineto) s
+5 578 M
+(    closepath stroke) s
+5 567 M
+(  grestore) s
+5 556 M
+(} def) s
+5 534 M
+(% Do the actual underlay drawing) s
+5 523 M
+(/draw_underlay {) s
+5 512 M
+(  ul_style 0 eq {) s
+5 501 M
+(    ul_str true charpath stroke) s
+5 490 M
+(  } {) s
+5 479 M
+(    ul_str show) s
+5 468 M
+(  } ifelse) s
+5 457 M
+(} def) s
+5 435 M
+(% Underlay) s
+5 424 M
+(/underlay {     % - -> -) s
+5 413 M
+(  gsave) s
+5 402 M
+(    0 d_page_h translate) s
+5 391 M
+(    d_page_h neg d_page_w atan rotate) s
+5 369 M
+(    ul_gray setgray) s
+5 358 M
+(    ul_font setfont) s
+5 347 M
+(    /dw d_page_h dup mul d_page_w dup mul add sqrt def) s
+5 336 M
+(    ul_str stringwidth pop dw exch sub 2 div ul_h_ptsize -2 div moveto) s
+5 325 M
+(    draw_underlay) s
+5 314 M
+(  grestore) s
+5 303 M
+(} def) s
+5 281 M
+(/user_underlay {        % - -> -) s
+5 270 M
+(  gsave) s
+5 259 M
+(    ul_x ul_y translate) s
+5 248 M
+(    ul_angle rotate) s
+5 237 M
+(    ul_gray setgray) s
+5 226 M
+(    ul_font setfont) s
+5 215 M
+(    0 0 ul_h_ptsize 2 div sub moveto) s
+5 204 M
+(    draw_underlay) s
+5 193 M
+(  grestore) s
+5 182 M
+(} def) s
+5 160 M
+(% Page prefeed) s
+5 149 M
+(/page_prefeed {         % bool -> -) s
+5 138 M
+(  statusdict /prefeed known {) s
+5 127 M
+(    statusdict exch /prefeed exch put) s
+5 116 M
+(  } {) s
+5 105 M
+(    pop) s
+5 94 M
+(  } ifelse) s
+5 83 M
+(} def) s
+5 61 M
+(% Wrapped line markers) s
+5 50 M
+(/wrapped_line_mark {    % x y charwith charheight type -> -) s
+5 39 M
+(  /type exch def) s
+5 28 M
+(  /h exch def) s
+5 17 M
+(  /w exch def) s
+5 6 M
+(  /y exch def) s
+_R
+S
+%%Page: (5) 5
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 5 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (5) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(  /x exch def) s
+5 699 M
+(  type 2 eq {) s
+5 688 M
+(    % Black boxes \(like TeX does\)) s
+5 677 M
+(    gsave) s
+5 666 M
+(      0 setlinewidth) s
+5 655 M
+(      x w 4 div add y M) s
+5 644 M
+(      0 h rlineto w 2 div 0 rlineto 0 h neg rlineto) s
+5 633 M
+(      closepath fill) s
+5 622 M
+(    grestore) s
+5 611 M
+(  } {) s
+5 600 M
+(    type 3 eq {) s
+5 589 M
+(      % Small arrows) s
+5 578 M
+(      gsave) s
+5 567 M
+(        .2 setlinewidth) s
+5 556 M
+(        x w 2 div add y h 2 div add M) s
+5 545 M
+(        w 4 div 0 rlineto) s
+5 534 M
+(        x w 4 div add y lineto stroke) s
+5 512 M
+(        x w 4 div add w 8 div add y h 4 div add M) s
+5 501 M
+(        x w 4 div add y lineto) s
+5 490 M
+(        w 4 div h 8 div rlineto stroke) s
+5 479 M
+(      grestore) s
+5 468 M
+(    } {) s
+5 457 M
+(      % do nothing) s
+5 446 M
+(    } ifelse) s
+5 435 M
+(  } ifelse) s
+5 424 M
+(} def) s
+5 402 M
+(% EPSF import.) s
+5 380 M
+(/BeginEPSF {) s
+5 369 M
+(  /b4_Inc_state save def                % Save state for cleanup) s
+5 358 M
+(  /dict_count countdictstack def        % Count objects on dict stack) s
+5 347 M
+(  /op_count count 1 sub def             % Count objects on operand stack) s
+5 336 M
+(  userdict begin) s
+5 325 M
+(  /showpage { } def) s
+5 314 M
+(  0 setgray 0 setlinecap) s
+5 303 M
+(  1 setlinewidth 0 setlinejoin) s
+5 292 M
+(  10 setmiterlimit [ ] 0 setdash newpath) s
+5 281 M
+(  /languagelevel where {) s
+5 270 M
+(    pop languagelevel) s
+5 259 M
+(    1 ne {) s
+5 248 M
+(      false setstrokeadjust false setoverprint) s
+5 237 M
+(    } if) s
+5 226 M
+(  } if) s
+5 215 M
+(} bind def) s
+5 193 M
+(/EndEPSF {) s
+5 182 M
+(  count op_count sub { pos } repeat     % Clean up stacks) s
+5 171 M
+(  countdictstack dict_count sub { end } repeat) s
+5 160 M
+(  b4_Inc_state restore) s
+5 149 M
+(} bind def) s
+5 127 M
+(% Check PostScript language level.) s
+5 116 M
+(/languagelevel where {) s
+5 105 M
+(  pop /gs_languagelevel languagelevel def) s
+5 94 M
+(} {) s
+5 83 M
+(  /gs_languagelevel 1 def) s
+5 72 M
+(} ifelse) s
+5 61 M
+(%%EndResource) s
+5 50 M
+(%%BeginResource: procset Enscript-Encoding-88591 1.6.5 90) s
+5 39 M
+(/encoding_vector [) s
+5 28 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 17 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 6 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+_R
+S
+%%Page: (6) 6
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 6 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (6) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 710 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 699 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 688 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 677 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 666 M
+(/space          /exclam         /quotedbl       /numbersign     ) s
+5 655 M
+(/dollar         /percent        /ampersand      /quoteright     ) s
+5 644 M
+(/parenleft      /parenright     /asterisk       /plus           ) s
+5 633 M
+(/comma          /hyphen         /period         /slash          ) s
+5 622 M
+(/zero           /one            /two            /three          ) s
+5 611 M
+(/four           /five           /six            /seven          ) s
+5 600 M
+(/eight          /nine           /colon          /semicolon      ) s
+5 589 M
+(/less           /equal          /greater        /question       ) s
+5 578 M
+(/at             /A              /B              /C              ) s
+5 567 M
+(/D              /E              /F              /G              ) s
+5 556 M
+(/H              /I              /J              /K              ) s
+5 545 M
+(/L              /M              /N              /O              ) s
+5 534 M
+(/P              /Q              /R              /S              ) s
+5 523 M
+(/T              /U              /V              /W              ) s
+5 512 M
+(/X              /Y              /Z              /bracketleft    ) s
+5 501 M
+(/backslash      /bracketright   /asciicircum    /underscore     ) s
+5 490 M
+(/quoteleft      /a              /b              /c              ) s
+5 479 M
+(/d              /e              /f              /g              ) s
+5 468 M
+(/h              /i              /j              /k              ) s
+5 457 M
+(/l              /m              /n              /o              ) s
+5 446 M
+(/p              /q              /r              /s              ) s
+5 435 M
+(/t              /u              /v              /w              ) s
+5 424 M
+(/x              /y              /z              /braceleft      ) s
+5 413 M
+(/bar            /braceright     /tilde          /.notdef        ) s
+5 402 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 391 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 380 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 369 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 358 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 347 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 336 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 325 M
+(/.notdef        /.notdef        /.notdef        /.notdef        ) s
+5 314 M
+(/space          /exclamdown     /cent           /sterling       ) s
+5 303 M
+(/currency       /yen            /brokenbar      /section        ) s
+5 292 M
+(/dieresis       /copyright      /ordfeminine    /guillemotleft  ) s
+5 281 M
+(/logicalnot     /hyphen         /registered     /macron         ) s
+5 270 M
+(/degree         /plusminus      /twosuperior    /threesuperior  ) s
+5 259 M
+(/acute          /mu             /paragraph      /bullet         ) s
+5 248 M
+(/cedilla        /onesuperior    /ordmasculine   /guillemotright ) s
+5 237 M
+(/onequarter     /onehalf        /threequarters  /questiondown   ) s
+5 226 M
+(/Agrave         /Aacute         /Acircumflex    /Atilde         ) s
+5 215 M
+(/Adieresis      /Aring          /AE             /Ccedilla       ) s
+5 204 M
+(/Egrave         /Eacute         /Ecircumflex    /Edieresis      ) s
+5 193 M
+(/Igrave         /Iacute         /Icircumflex    /Idieresis      ) s
+5 182 M
+(/Eth            /Ntilde         /Ograve         /Oacute         ) s
+5 171 M
+(/Ocircumflex    /Otilde         /Odieresis      /multiply       ) s
+5 160 M
+(/Oslash         /Ugrave         /Uacute         /Ucircumflex    ) s
+5 149 M
+(/Udieresis      /Yacute         /Thorn          /germandbls     ) s
+5 138 M
+(/agrave         /aacute         /acircumflex    /atilde         ) s
+5 127 M
+(/adieresis      /aring          /ae             /ccedilla       ) s
+5 116 M
+(/egrave         /eacute         /ecircumflex    /edieresis      ) s
+5 105 M
+(/igrave         /iacute         /icircumflex    /idieresis      ) s
+5 94 M
+(/eth            /ntilde         /ograve         /oacute         ) s
+5 83 M
+(/ocircumflex    /otilde         /odieresis      /divide         ) s
+5 72 M
+(/oslash         /ugrave         /uacute         /ucircumflex    ) s
+5 61 M
+(/udieresis      /yacute         /thorn          /ydieresis      ) s
+5 50 M
+(] def) s
+5 39 M
+(%%EndResource) s
+5 28 M
+(%%EndProlog) s
+5 17 M
+(%%BeginSetup) s
+5 6 M
+(%%IncludeResource: font Courier-Bold) s
+_R
+S
+%%Page: (7) 7
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 7 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (7) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(%%IncludeResource: font Courier) s
+5 710 M
+(/HFpt_w 10 def) s
+5 699 M
+(/HFpt_h 10 def) s
+5 688 M
+(/Courier-Bold /HF-gs-font MF) s
+5 677 M
+(/HF /HF-gs-font findfont [HFpt_w 0 0 HFpt_h 0 0] makefont def) s
+5 666 M
+(/Courier /F-gs-font MF) s
+5 655 M
+(/F-gs-font 10 10 SF) s
+5 644 M
+(/#copies 1 def) s
+5 633 M
+(% Pagedevice definitions:) s
+5 622 M
+(gs_languagelevel 1 gt {) s
+5 611 M
+(  <<) s
+5 600 M
+(    /PageSize [595 842] ) s
+5 589 M
+(  >> setpagedevice) s
+5 578 M
+(} if) s
+5 567 M
+(%%BeginResource: procset Enscript-Header-enscript 1.6.5 90) s
+5 556 M
+(%%IncludeResource: font Times-Bold) s
+5 545 M
+(%%IncludeResource: font Times-Roman) s
+5 523 M
+(% Fonts.) s
+5 512 M
+(/Times-Bold /HeaderFont-Bold MF) s
+5 501 M
+(/HeaderDateF /HeaderFont-Bold findfont 12 scalefont def) s
+5 479 M
+(/Times-Roman /HeaderFont-Times MF) s
+5 468 M
+(/HeaderHDRF /HeaderFont-Times findfont 14 scalefont def) s
+5 446 M
+(/HeaderPageNumF /Helvetica-Bold findfont 28.8 scalefont def) s
+5 424 M
+(/do_header {    % print enscript header) s
+5 413 M
+(  gsave) s
+5 402 M
+(    d_header_x d_header_y translate) s
+5 380 M
+(    % light bar) s
+5 369 M
+(    0 0 d_header_w d_header_h 2 div Box) s
+5 358 M
+(    .95 setgray fill) s
+5 336 M
+(    % dark gray boxes) s
+5 325 M
+(    /dbw d_header_h 2 mul def   % dark box width) s
+5 314 M
+(    /dbc .7 def                 % dark box color) s
+5 292 M
+(    % left dark box.) s
+5 281 M
+(    0 0 dbw d_header_h Box) s
+5 270 M
+(    dbc setgray fill) s
+5 248 M
+(    0 setgray ) s
+5 237 M
+(    HeaderDateF setfont) s
+5 226 M
+(    moddatestr dup stringwidth pop dbw exch sub 2 div ) s
+5 215 M
+(    d_header_h 2 div 2 add moveto show) s
+5 204 M
+(    modtimestr dup stringwidth pop dbw exch sub 2 div ) s
+5 193 M
+(    d_header_h 5 div moveto show) s
+5 171 M
+(    % right dark box) s
+5 160 M
+(    d_header_w dbw sub 0 dbw d_header_h Box) s
+5 149 M
+(    dbc setgray fill) s
+5 127 M
+(    HeaderPageNumF setfont) s
+5 116 M
+(    1 setgray) s
+5 105 M
+(    pagenumstr dup) s
+5 94 M
+(    stringwidth pop dbw exch sub 2 div d_header_w dbw sub add) s
+5 83 M
+(    d_header_h .2 mul moveto show) s
+5 61 M
+(    % filename) s
+5 50 M
+(    0 setgray ) s
+5 39 M
+(    HeaderHDRF setfont) s
+5 28 M
+(    d_header_w fname stringwidth pop sub 2 div d_header_h 8 div moveto) s
+5 17 M
+(    fname show) s
+_R
+S
+%%Page: (8) 8
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 8 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (8) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(    % user supplied header string.) s
+5 710 M
+(    user_header_p {) s
+5 699 M
+(      /h d_header_h 8 div 5 mul def) s
+5 677 M
+(      % Implement strict enscript compatibility.) s
+5 666 M
+(      user_header_center_str \(\) eq user_header_right_str \(\) eq and {) s
+5 655 M
+(        d_header_w user_header_left_str stringwidth pop sub 2 div ) s
+5 644 M
+(        h moveto user_header_left_str show) s
+5 633 M
+(      } {) s
+5 622 M
+(        dbw 5 add h moveto user_header_left_str show) s
+5 600 M
+(        d_header_w user_header_center_str stringwidth pop sub 2 div ) s
+5 589 M
+(        h moveto user_header_center_str show) s
+5 567 M
+(        d_header_w dbw sub 5 sub user_header_right_str stringwidth pop) s
+5 556 M
+(        sub h moveto user_header_right_str show) s
+5 545 M
+(      } ifelse) s
+5 534 M
+(    } if) s
+5 512 M
+(  grestore) s
+5 501 M
+(} def) s
+5 490 M
+(%%EndResource) s
+5 479 M
+(/d_page_w 559 def) s
+5 468 M
+(/d_page_h 770 def) s
+5 457 M
+(/d_header_x 0 def) s
+5 446 M
+(/d_header_y 734 def) s
+5 435 M
+(/d_header_w 559 def) s
+5 424 M
+(/d_header_h 36 def) s
+5 413 M
+(/d_footer_x 0 def) s
+5 402 M
+(/d_footer_y 0 def) s
+5 391 M
+(/d_footer_w 559 def) s
+5 380 M
+(/d_footer_h 0 def) s
+5 369 M
+(/d_output_w 559 def) s
+5 358 M
+(/d_output_h 734 def) s
+5 347 M
+(/cols 1 def) s
+5 336 M
+(%%EndSetup) s
+5 325 M
+(%%Page: \(1\) 1) s
+5 314 M
+(%%BeginPageSetup) s
+5 303 M
+(_S) s
+5 292 M
+(18 36 translate) s
+5 281 M
+(/pagenum 1 def) s
+5 270 M
+(/fname \(asrs_report.txt\) def) s
+5 259 M
+(/fdir \(.\) def) s
+5 248 M
+(/ftail \(asrs_report.txt\) def) s
+5 237 M
+(% User defined strings:) s
+5 226 M
+(/pagenumstr \(1\) def) s
+5 215 M
+(/moddatestr \(09/20/19\) def) s
+5 204 M
+(/modtimestr \(22:18:47\) def) s
+5 193 M
+(/user_header_p true def) s
+5 182 M
+(/user_header_left_str \(ASRS REPORT\) def) s
+5 171 M
+(/user_header_center_str \(\) def) s
+5 160 M
+(/user_header_right_str \(\) def) s
+5 149 M
+(/user_footer_p false def) s
+5 138 M
+(%%EndPageSetup) s
+5 127 M
+(do_header) s
+5 116 M
+(5 721 M) s
+5 105 M
+(\(From : 2019/09/06  To : 2019/09/07\) s) s
+5 94 M
+(5 699 M) s
+5 83 M
+(\(UID  |  NAME  |  DOB  |  ID  |  COMPANY  |  VALIDITY  |  DATE_IN  |  DATE_OUT\) s) s
+5 72 M
+(5 688 M) s
+5 61 M
+(\(-----------------------------------------------------------------------------\) s) s
+5 50 M
+(5 666 M) s
+5 39 M
+(\(ASRS666446898 | RE CEO1EE | RE CEO1EE | C7 | RE CEO1EE | null | 2019/09/06 at 01:52 | 2019) s
+5 28 M
+(/\) s) s
+5 17 M
+(5 655 M) s
+5 6 M
+(\(09/06 at 01:58\) s) s
+_R
+S
+%%Page: (9) 9
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 9 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (9) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(5 633 M) s
+5 710 M
+(\(------------------------------------------------------------------------------------------) s
+5 699 M
+(-\) s) s
+5 688 M
+(5 611 M) s
+5 677 M
+(\(ASRS1834910704 | null | null | null | null | null | 2019/09/07 at 15:50 | 2019/09/07 at 15) s
+5 666 M
+(:\) s) s
+5 655 M
+(5 600 M) s
+5 644 M
+(\(52\) s) s
+5 633 M
+(5 578 M) s
+5 622 M
+(\(------------------------------------------------------------------------------------------) s
+5 611 M
+(-\) s) s
+5 600 M
+(5 556 M) s
+5 589 M
+(\(ASRS-448380283 | null | null | null | null | null | 2019/09/07 at 17:34 | 2019/09/07 at 17) s
+5 578 M
+(:\) s) s
+5 567 M
+(5 545 M) s
+5 556 M
+(\(44\) s) s
+5 545 M
+(5 523 M) s
+5 534 M
+(\(------------------------------------------------------------------------------------------) s
+5 523 M
+(-\) s) s
+5 512 M
+(5 501 M) s
+5 501 M
+(\(ASRS-878028670 | null | null | null | null | null | 2019/09/06 at 01:29 | 2019/09/06 at 01) s
+5 490 M
+(:\) s) s
+5 479 M
+(5 490 M) s
+5 468 M
+(\(31\) s) s
+5 457 M
+(5 468 M) s
+5 446 M
+(\(------------------------------------------------------------------------------------------) s
+5 435 M
+(-\) s) s
+5 424 M
+(5 446 M) s
+5 413 M
+(\(ASRS-997913351 | null | null | null | null | null | 2019/09/07 at 15:52 | 2019/09/07 at 16) s
+5 402 M
+(:\) s) s
+5 391 M
+(5 435 M) s
+5 380 M
+(\(01\) s) s
+5 369 M
+(5 413 M) s
+5 358 M
+(\(------------------------------------------------------------------------------------------) s
+5 347 M
+(-\) s) s
+5 336 M
+(5 391 M) s
+5 325 M
+(\(ASRS567088989 | null | null | null | null | null | 2019/09/07 at 18:58 | 2019/09/07 at 19:) s
+5 314 M
+(0\) s) s
+5 303 M
+(5 380 M) s
+5 292 M
+(\(0\) s) s
+5 281 M
+(5 358 M) s
+5 270 M
+(\(------------------------------------------------------------------------------------------) s
+5 259 M
+(-\) s) s
+5 248 M
+(5 336 M) s
+5 237 M
+(\(ASRS2112928798 | null | null | null | null | null | 2019/09/07 at 16:00 | 2019/09/07 at 16) s
+5 226 M
+(:\) s) s
+5 215 M
+(5 325 M) s
+5 204 M
+(\(02\) s) s
+5 193 M
+(5 303 M) s
+5 182 M
+(\(------------------------------------------------------------------------------------------) s
+5 171 M
+(-\) s) s
+5 160 M
+(5 281 M) s
+5 149 M
+(\(ASRS1166011915 | ineinie | null | null | null | null | 2019/09/07 at 19:15 | 2019/09/07 at) s
+5 138 M
+( \) s) s
+5 127 M
+(5 270 M) s
+5 116 M
+(\(19:21\) s) s
+5 105 M
+(5 248 M) s
+5 94 M
+(\(------------------------------------------------------------------------------------------) s
+5 83 M
+(-\) s) s
+5 72 M
+(5 226 M) s
+5 61 M
+(\(ASRS819265866 | Cand | null | null | Cand | 20082 | 2019/09/07 at 19:10 | 2019/09/07 at 19) s
+5 50 M
+(:\) s) s
+5 39 M
+(5 215 M) s
+5 28 M
+(\(14\) s) s
+5 17 M
+(5 193 M) s
+5 6 M
+(\(------------------------------------------------------------------------------------------) s
+_R
+S
+%%Page: (10) 10
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 10 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (10) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(-\) s) s
+5 710 M
+(5 171 M) s
+5 699 M
+(\(ASRS1538319669 | null | null | null | null | null | 2019/09/07 at 19:24 | 2019/09/07 at 19) s
+5 688 M
+(:\) s) s
+5 677 M
+(5 160 M) s
+5 666 M
+(\(25\) s) s
+5 655 M
+(5 138 M) s
+5 644 M
+(\(------------------------------------------------------------------------------------------) s
+5 633 M
+(-\) s) s
+5 622 M
+(5 116 M) s
+5 611 M
+(\(ASRS-1680699153 | JOSE GEORGSE | null | 62317583 | null | null | 2019/09/06 at 01:20 | 201) s
+5 600 M
+(9\) s) s
+5 589 M
+(5 105 M) s
+5 578 M
+(\(/09/06 at 01:24\) s) s
+5 567 M
+(5 83 M) s
+5 556 M
+(\(------------------------------------------------------------------------------------------) s
+5 545 M
+(-\) s) s
+5 534 M
+(5 61 M) s
+5 523 M
+(\(ASRS-2133923638 | null | null | null | null | null | 2019/09/07 at 16:12 | Still in storag) s
+5 512 M
+(e\) s) s
+5 501 M
+(5 39 M) s
+5 490 M
+(\(------------------------------------------------------------------------------------------) s
+5 479 M
+(-\) s) s
+5 468 M
+(5 17 M) s
+5 457 M
+(\(ASRS51702663 | null | null | null | null | null | 2019/09/07 at 15:42 | 2019/09/08 at 10:3) s
+5 446 M
+(9\) s) s
+5 435 M
+(_R) s
+5 424 M
+(S) s
+5 413 M
+(%%Page: \(2\) 2) s
+5 402 M
+(%%BeginPageSetup) s
+5 391 M
+(_S) s
+5 380 M
+(18 36 translate) s
+5 369 M
+(/pagenum 2 def) s
+5 358 M
+(/fname \(asrs_report.txt\) def) s
+5 347 M
+(/fdir \(.\) def) s
+5 336 M
+(/ftail \(asrs_report.txt\) def) s
+5 325 M
+(% User defined strings:) s
+5 314 M
+(/pagenumstr \(2\) def) s
+5 303 M
+(/moddatestr \(09/20/19\) def) s
+5 292 M
+(/modtimestr \(22:18:47\) def) s
+5 281 M
+(/user_header_p true def) s
+5 270 M
+(/user_header_left_str \(ASRS REPORT\) def) s
+5 259 M
+(/user_header_center_str \(\) def) s
+5 248 M
+(/user_header_right_str \(\) def) s
+5 237 M
+(/user_footer_p false def) s
+5 226 M
+(%%EndPageSetup) s
+5 215 M
+(do_header) s
+5 204 M
+(5 721 M) s
+5 193 M
+(\(------------------------------------------------------------------------------------------) s
+5 182 M
+(-\) s) s
+5 171 M
+(5 699 M) s
+5 160 M
+(\(ASRS-1278875546 | ASRS | null | null | null | ASRS | 2019/09/07 at 16:04 | Still in storag) s
+5 149 M
+(e\) s) s
+5 138 M
+(5 677 M) s
+5 127 M
+(\(------------------------------------------------------------------------------------------) s
+5 116 M
+(-\) s) s
+5 105 M
+(5 655 M) s
+5 94 M
+(\(ASRS1626429700 | null | null | null | null | null | 2019/09/07 at 16:14 | Still in storage) s
+5 83 M
+(\) s) s
+5 72 M
+(5 633 M) s
+5 61 M
+(\(------------------------------------------------------------------------------------------) s
+5 50 M
+(-\) s) s
+5 39 M
+(5 611 M) s
+5 28 M
+(\(ASRS-98195212 | 043 | ASRS | null | null | null | 2019/09/07 at 16:08 | 2019/09/07 at 16:1) s
+5 17 M
+(1\) s) s
+5 6 M
+(5 589 M) s
+_R
+S
+%%Page: (11) 11
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 11 def
+/fname (output.ps) def
+/fdir (.) def
+/ftail (output.ps) def
+% User defined strings:
+/pagenumstr (11) def
+/moddatestr (09/20/19) def
+/modtimestr (22:18:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(\(------------------------------------------------------------------------------------------) s
+5 710 M
+(-\) s) s
+5 699 M
+(5 567 M) s
+5 688 M
+(\(ASRS-1265211759 | null | null | null | null | null | 2019/09/06 at 01:33 | 2019/09/06 at 0) s
+5 677 M
+(1\) s) s
+5 666 M
+(5 556 M) s
+5 655 M
+(\(:40\) s) s
+5 644 M
+(5 534 M) s
+5 633 M
+(\(------------------------------------------------------------------------------------------) s
+5 622 M
+(-\) s) s
+5 611 M
+(5 512 M) s
+5 600 M
+(\(ASRS-65953780 | null | null | null | null | null | 2019/09/07 at 19:22 | 2019/09/07 at 19:) s
+5 589 M
+(2\) s) s
+5 578 M
+(5 501 M) s
+5 567 M
+(\(3\) s) s
+5 556 M
+(5 479 M) s
+5 545 M
+(\(------------------------------------------------------------------------------------------) s
+5 534 M
+(-\) s) s
+5 523 M
+(5 457 M) s
+5 512 M
+(\(ASRS1229084465 | NAVANEETHA | 14-Jul-1953 | null | null | 16/01/2021 | 2019/09/07 at 17:07) s
+5 501 M
+( \) s) s
+5 490 M
+(5 446 M) s
+5 479 M
+(\(| 2019/09/07 at 17:12\) s) s
+5 468 M
+(5 424 M) s
+5 457 M
+(\(------------------------------------------------------------------------------------------) s
+5 446 M
+(-\) s) s
+5 435 M
+(5 402 M) s
+5 424 M
+(\(ASRS-1965956892 | null | null | null | null | null | 2019/09/06 at 01:36 | 2019/09/06 at 0) s
+5 413 M
+(1\) s) s
+5 402 M
+(5 391 M) s
+5 391 M
+(\(:39\) s) s
+5 380 M
+(5 369 M) s
+5 369 M
+(\(------------------------------------------------------------------------------------------) s
+5 358 M
+(-\) s) s
+5 347 M
+(5 347 M) s
+5 336 M
+(\(ASRS-1024603240 | null | null | null | null | null | 2019/09/06 at 01:59 | 2019/09/06 at 0) s
+5 325 M
+(2\) s) s
+5 314 M
+(5 336 M) s
+5 303 M
+(\(:02\) s) s
+5 292 M
+(5 314 M) s
+5 281 M
+(\(------------------------------------------------------------------------------------------) s
+5 270 M
+(-\) s) s
+5 259 M
+(5 292 M) s
+5 248 M
+(\(ASRS-1442487745 | null | null | null | null | null | 2019/09/07 at 16:13 | Still in storag) s
+5 237 M
+(e\) s) s
+5 226 M
+(5 270 M) s
+5 215 M
+(\(------------------------------------------------------------------------------------------) s
+5 204 M
+(-\) s) s
+5 193 M
+(_R) s
+5 182 M
+(S) s
+5 171 M
+(%%Trailer) s
+5 160 M
+(%%Pages: 2) s
+5 149 M
+(%%DocumentNeededResources: font Times-Roman Courier-Bold Courier ) s
+5 138 M
+(%%+ font Times-Bold ) s
+5 127 M
+(%%EOF) s
+_R
+S
+%%Page: (1) 12
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 1 def
+/fname (asrs_report.txt) def
+/fdir (.) def
+/ftail (asrs_report.txt) def
+% User defined strings:
+/pagenumstr (1) def
+/moddatestr (09/20/19) def
+/modtimestr (22:20:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 721 M
+(From : 2019/09/06  To : 2019/09/07) s
+5 699 M
+(UID  |  NAME  |  DOB  |  ID  |  COMPANY  |  VALIDITY  |  DATE_IN  |  DATE_OUT) s
+5 688 M
+(-----------------------------------------------------------------------------) s
+5 666 M
+(ASRS-997913351 | null | null | null | null | null | 2019/09/07 at 15:52 | 2019/09/07 at 16:) s
+5 655 M
+(01) s
+5 633 M
+(-------------------------------------------------------------------------------------------) s
+5 611 M
+(ASRS-1024603240 | null | null | null | null | null | 2019/09/06 at 01:59 | 2019/09/06 at 02) s
+5 600 M
+(:02) s
+5 578 M
+(-------------------------------------------------------------------------------------------) s
+5 556 M
+(ASRS-2133923638 | null | null | null | null | null | 2019/09/07 at 16:12 | Still in storage) s
+5 534 M
+(-------------------------------------------------------------------------------------------) s
+5 512 M
+(ASRS-1442487745 | null | null | null | null | null | 2019/09/07 at 16:13 | Still in storage) s
+5 490 M
+(-------------------------------------------------------------------------------------------) s
+5 468 M
+(ASRS1166011915 | ineinie | null | null | null | null | 2019/09/07 at 19:15 | 2019/09/07 at ) s
+5 457 M
+(19:21) s
+5 435 M
+(-------------------------------------------------------------------------------------------) s
+5 413 M
+(ASRS-1278875546 | ASRS | null | null | null | ASRS | 2019/09/07 at 16:04 | Still in storage) s
+5 391 M
+(-------------------------------------------------------------------------------------------) s
+5 369 M
+(ASRS1538319669 | null | null | null | null | null | 2019/09/07 at 19:24 | 2019/09/07 at 19:) s
+5 358 M
+(25) s
+5 336 M
+(-------------------------------------------------------------------------------------------) s
+5 314 M
+(ASRS-1265211759 | null | null | null | null | null | 2019/09/06 at 01:33 | 2019/09/06 at 01) s
+5 303 M
+(:40) s
+5 281 M
+(-------------------------------------------------------------------------------------------) s
+5 259 M
+(ASRS2112928798 | null | null | null | null | null | 2019/09/07 at 16:00 | 2019/09/07 at 16:) s
+5 248 M
+(02) s
+5 226 M
+(-------------------------------------------------------------------------------------------) s
+5 204 M
+(ASRS567088989 | null | null | null | null | null | 2019/09/07 at 18:58 | 2019/09/07 at 19:0) s
+5 193 M
+(0) s
+5 171 M
+(-------------------------------------------------------------------------------------------) s
+5 149 M
+(ASRS-448380283 | null | null | null | null | null | 2019/09/07 at 17:34 | 2019/09/07 at 17:) s
+5 138 M
+(44) s
+5 116 M
+(-------------------------------------------------------------------------------------------) s
+5 94 M
+(ASRS-65953780 | null | null | null | null | null | 2019/09/07 at 19:22 | 2019/09/07 at 19:2) s
+5 83 M
+(3) s
+5 61 M
+(-------------------------------------------------------------------------------------------) s
+5 39 M
+(ASRS-1965956892 | null | null | null | null | null | 2019/09/06 at 01:36 | 2019/09/06 at 01) s
+5 28 M
+(:39) s
+5 6 M
+(-------------------------------------------------------------------------------------------) s
+_R
+S
+%%Page: (2) 13
+%%BeginPageSetup
+_S
+18 36 translate
+/pagenum 2 def
+/fname (asrs_report.txt) def
+/fdir (.) def
+/ftail (asrs_report.txt) def
+% User defined strings:
+/pagenumstr (2) def
+/moddatestr (09/20/19) def
+/modtimestr (22:20:47) def
+/user_header_p true def
+/user_header_left_str (ASRS REPORT) def
+/user_header_center_str () def
+/user_header_right_str () def
+/user_footer_p false def
+%%EndPageSetup
+column_borders
+do_header
+5 710 M
+(ASRS51702663 | null | null | null | null | null | 2019/09/07 at 15:42 | 2019/09/08 at 10:39) s
+5 688 M
+(-------------------------------------------------------------------------------------------) s
+5 666 M
+(ASRS-98195212 | 043 | ASRS | null | null | null | 2019/09/07 at 16:08 | 2019/09/07 at 16:11) s
+5 644 M
+(-------------------------------------------------------------------------------------------) s
+5 622 M
+(ASRS1229084465 | NAVANEETHA | 14-Jul-1953 | null | null | 16/01/2021 | 2019/09/07 at 17:07 ) s
+5 611 M
+(| 2019/09/07 at 17:12) s
+5 589 M
+(-------------------------------------------------------------------------------------------) s
+5 567 M
+(ASRS819265866 | Cand | null | null | Cand | 20082 | 2019/09/07 at 19:10 | 2019/09/07 at 19:) s
+5 556 M
+(14) s
+5 534 M
+(-------------------------------------------------------------------------------------------) s
+5 512 M
+(ASRS1834910704 | null | null | null | null | null | 2019/09/07 at 15:50 | 2019/09/07 at 15:) s
+5 501 M
+(52) s
+5 479 M
+(-------------------------------------------------------------------------------------------) s
+5 457 M
+(ASRS1626429700 | null | null | null | null | null | 2019/09/07 at 16:14 | Still in storage) s
+5 435 M
+(-------------------------------------------------------------------------------------------) s
+5 413 M
+(ASRS-878028670 | null | null | null | null | null | 2019/09/06 at 01:29 | 2019/09/06 at 01:) s
+5 402 M
+(31) s
+5 380 M
+(-------------------------------------------------------------------------------------------) s
+5 358 M
+(ASRS666446898 | RE CEO1EE | RE CEO1EE | C7 | RE CEO1EE | null | 2019/09/06 at 01:52 | 2019/) s
+5 347 M
+(09/06 at 01:58) s
+5 325 M
+(-------------------------------------------------------------------------------------------) s
+5 303 M
+(ASRS-1680699153 | JOSE GEORGSE | null | 62317583 | null | null | 2019/09/06 at 01:20 | 2019) s
+5 292 M
+(/09/06 at 01:24) s
+5 270 M
+(-------------------------------------------------------------------------------------------) s
+_R
+S
+%%Trailer
+%%Pages: 13
+%%DocumentNeededResources: font Times-Roman Courier-Bold Courier 
+%%+ font Times-Bold 
+%%EOF

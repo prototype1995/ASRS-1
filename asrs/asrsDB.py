@@ -15,7 +15,7 @@ class ASRSDataBase:
     pictures will be saved with datetime_in prefix
 
     CREATE TABLE records
-                 (uid int, datetime_in text, datetime_out text, ocr_info text)
+                 (uid int, datetime_in text, datetime_out text, ocr_info text, mobile_num text)
 
     CREATE TABLE ocr_table
                  (uid int, name text, dob text, id text, company text, validity text)
@@ -49,7 +49,7 @@ class ASRSDataBase:
 
             self.__c.execute('''CREATE TABLE records
                          (uid int, datetime_in text, datetime_out text,
-                         ocr_info text)''')
+                         ocr_info text, mobile_num text)''')
 
             self.__c.execute('''CREATE TABLE ocr_table
                          (uid int, name text, dob text, id text, company text,
@@ -192,6 +192,17 @@ class ASRSDataBase:
         self.__c.execute('INSERT INTO records(uid, datetime_in, datetime_out, ocr_info) VALUES (?, ?, ?, ?)', t)
         self.__conn.commit()
 
+    def insert_mobile_to_records(self, uid, mob):
+        """
+        Inserts mobile number to records table.
+        """
+        logger.info("Called insert_mobile_to_records()...")
+        self.__c.execute('''UPDATE records
+                            SET mobile_num = ?
+                            WHERE uid = ?''',(mob,uid,))
+        logger.info("Mobile number added to records.")
+        self.__conn.commit()
+
 
     def insert_to_ocr_table(self, o):
         """
@@ -253,10 +264,12 @@ class ASRSDataBase:
         """
         self.__conn.close();
 
+
     def close(self):
         """
         """
         self.__conn.close();
+
 
     def get_all_curr_users(self):
         """
@@ -277,7 +290,7 @@ class ASRSDataBase:
         current_date_in = self.__c.execute('SELECT datetime_in FROM current')
         for j in current_date_in.fetchall():
             if j[0]==date:
-                formatted_date_out = "-/-/-"
+                formatted_date_out = "Still in storage"
                 break
             else:
                 date_out = self.__c.execute('SELECT datetime_out FROM records WHERE datetime_in = ?', (date,)).fetchone()[0]
@@ -302,8 +315,6 @@ class ASRSDataBase:
                 date_out = self.check_date_in_current(i[0])
                 name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (uid,)).fetchone()[0]
                 key_data[uid] = name+";"+formatted_date_in+";"+date_out
-#                user_data[name] = key_data
-#        logger.info("Data Retrieved by date as {uid : date_out;name} - {}".format(key_data))
         return key_data
 
 
@@ -311,7 +322,6 @@ class ASRSDataBase:
         """
         Lists all UID's with specified name.
         """
-        user_list = {}
         key_list ={}
         uid = self.__c.execute('SELECT uid FROM ocr_table WHERE name = ?', (name,))
         for i in uid.fetchall():
@@ -319,9 +329,29 @@ class ASRSDataBase:
             formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
             date_out = self.check_date_in_current(date_in)
             key_list[i[0]] = formatted_date_in+";"+date_out
-#            user_list[i[0]] = key_list
-#        logger.info("Data Retrieved by name as {uid : date_in;date_out} - {}".format(key_list))
         return key_list
+
+
+    def list_slot_from_mobile(self, mob):
+        """
+        Lists all transactions with specified mobile number.
+        """
+        key_list ={}
+        uid = self.__c.execute('SELECT uid FROM records WHERE mobile_num = ?', (mob,))
+        for i in uid.fetchall():
+            date_in = self.__c.execute('SELECT datetime_in FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
+            formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
+            date_out = self.check_date_in_current(date_in)
+            key_list[i[0]] = formatted_date_in+";"+date_out
+        return key_list
+
+
+#    def eject_by_mobile_number(self, mob):
+#        """
+#        Eject card with specified mobile number.
+#        """
+#        uid = self.__c.execute('SELECT uid FROM records WHERE mobile_num = ?', (mob,)).fetchone()[0]
+#        return uid
 
 
     def list_all_users_between_dates(self, date1, date2):
@@ -377,3 +407,24 @@ class ASRSDataBase:
         last_date = self.__c.execute('SELECT MAX(datetime_in) FROM records').fetchone()[0]
         date_val[first_date] = last_date
         return date_val
+
+
+    def create_report(self, date1, date2):
+        """
+        Method to create report for given list.
+        """
+        data = self.list_all_users_between_dates(date1, date2)
+        formatted_date1 = date1[0:4]+"/"+date1[4:6]+"/"+date1[6:8]
+        formatted_date2 = date2[0:4]+"/"+date2[4:6]+"/"+date2[6:8]
+        with open('asrs_report.txt', 'w') as f:
+            f.write('\nFrom : {}  To : {}\n'.format(formatted_date1, formatted_date2))
+            f.write("-------------------------------------------------------------------------------------------\n")
+            f.write("-------------------------------------------------------------------------------------------\n\n")
+            for key, value in data.items():
+                x = value.split(';')
+                f.write('\n\n\n\nTID         : %s\n\nNAME        : %s\nDOB         : %s\nID          : %s\nCOMPANY     : %s\nVALIDITY    : %s\nSTORED DATE : %s  |  RETRIEVED DATE : %s \n\n' % (key, x[0], x[1], x[2], x[3], x[4], x[5], x[6]))
+                f.write("-------------------------------------------------------------------------------------------\n\n")
+
+        os.system('enscript -b "ASRS REPORT" -G -p output.ps asrs_report.txt')
+        os.system('ps2pdf output.ps asrs_report.pdf')
+

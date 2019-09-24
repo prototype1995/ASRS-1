@@ -24,6 +24,7 @@ class Slot:
         self.datetime_in = t[3]
         self.ocr_info = t[4]
 
+
     def copy(self, s):
         """
         Method to update current slot object with another
@@ -53,7 +54,7 @@ class Slot:
         Returns: Tuple of members
         """
         if to_records:
-            return (self.uid, self.datetime_in, self.datetime_out, self.ocr_info)
+            return (self.uid, self.datetime_in, self.datetime_out, self.ocr_info, self.mobile_num)
         else:
             return (self.slot_id, self.uid, self.status, self.datetime_in, self.ocr_info)
 

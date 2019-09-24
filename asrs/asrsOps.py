@@ -65,8 +65,8 @@ cardTray_pitch = config.getfloat('SLOTS', 'cardTray_pitch')
 
 logger.info("Intial Homing axes...")
 
-m2.go_home(delay=0.0001)
-m1.go_home(delay=0.0001)
+#m2.go_home(delay=0.0001)
+#m1.go_home(delay=0.0001)
 
 logger.info("Initial Homing axes complete.")
 
@@ -136,8 +136,8 @@ def init_image_proc():
 
     l1.fire_led(state=False) # Turned OFF LED
 
-    logger.info("Performing OCR [unimplemented]...")
-    slot.ocr_info = ocr.image_to_text()
+#    logger.info("Performing OCR [unimplemented]...")
+#    slot.ocr_info = ocr.image_to_text()
 
     logger.info("Generating QRcode.")
     slot.gen_uid()
@@ -149,11 +149,13 @@ def init_image_proc():
     return(True, bytes(content, "UTF-8"))
 
 
-def confirm_storage(print=False):
+def confirm_storage(print=False, data=""):
     logger.debug("confirm_storage() called...")
     s1.fire_solenoid(3)
     logger.info("Updating slot object.")
     slot.status = 1
+    logger.info("Adding OCR data to slot object...")
+    slot.ocr_info = data
     db.update_current(slot)
     db.insert_to_records(slot)
     if print:
@@ -167,7 +169,9 @@ def confirm_storage(print=False):
     content = '''{{ "cmd": "{}",
                     "slot": "{}"}}'''.format(cmd, slot.get_tuple())
     logger.debug(content)
-    return(True, bytes(content, "UTF-8"))
+#    return(True, bytes(content, "UTF-8"))
+    return True
+
 
 def confirm_retrieval():
     logger.debug("confirm_retrieval() called...")
@@ -364,6 +368,17 @@ def list_all_users_by_name(name):
     Returns : {uid : {date_in : date_out}}
     """
     user_list = db.list_slot_from_name(name)
+    content = json.dumps(user_list)
+    return content
+
+
+def list_all_users_by_mob(mob):
+    """
+    Method to list users by mobile number.
+    Args : Name
+    Returns : {uid : {date_in : date_out}}
+    """
+    user_list = db.list_slot_from_mobile(mob)
     content = json.dumps(user_list)
     return content
 

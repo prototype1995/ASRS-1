@@ -63,13 +63,13 @@ responses = { 'INIT_STORE'   : {
                          'content-type': 'application/json'
                         },
          'CONFIRM_STORE_NOPRINT': {
-                         'cmd': 'asrs.confirm_storage(print=False)',
+                         'cmd': 'confirm_storage_with_data(print=False)',
                          'response-good': 200,
                          'response-bad': 406,
                          'content-type': 'application/json'
                        },
          'CONFIRM_STORE_PRINT':{
-                        'cmd':'asrs.confirm_storage(print=True)',
+                        'cmd':'confirm_storage_with_data(print=True)',
                         'response-good': 200,
                         'response-bad': 406,
                         'content-type': 'text/plain'
@@ -255,6 +255,12 @@ responses = { 'INIT_STORE'   : {
                    'response-bad': 406,
                    'content-type': 'application/json'
                   },
+         'LSMOBILE':{
+                   'cmd': 'list_slot_from_mobile()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                   },
          'LSBYDATES':{
                     'cmd': 'get_users_between_dates()',
                     'response-good': 200,
@@ -316,7 +322,25 @@ responses = { 'INIT_STORE'   : {
                    'content-type': 'text/plain'
                    },
          'REPORT':{
+                   'cmd': 'send_pdf_report()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                   },
+         'LOG':{
                    'cmd': 'copy_log_file()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                   },
+         'OCRDATA':{
+                   'cmd': 'get_ocr_data()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'text/plain'
+                   },
+         'MOBILE':{
+                   'cmd': 'save_mobile_number()',
                    'response-good': 200,
                    'response-bad': 406,
                    'content-type': 'text/plain'
@@ -392,10 +416,7 @@ def update_server():
         return(False, bytes("-1","UTF-8"))
 
 
-def copy_log_file():
-    """
-    Method to copy the log file to the external device.
-    """
+def get_device(removable_device=""):
     try:
         context= pyudev.Context()
         removable = [device for device in context.list_devices(subsystem='block', DEVTYPE='disk') if device.attributes.asstring('removable') == "1"]
@@ -404,16 +425,44 @@ def copy_log_file():
             for p in psutil.disk_partitions():
                 if p.device in partitions:
                     removable_device = p.mountpoint
+        return removable_device
+    except:
+        pass
 
+
+def copy_log_file():
+    """
+    Method to copy the log file to the external device.
+    """
+    try:
+        removable_device = get_device("")
         logger.info("File testing/log.log is converting to testing/asrs_log.pdf")
         os.system('enscript -p testing/output.ps testing/log.log')
         os.system('ps2pdf testing/output.ps testing/asrs_log.pdf')
         os.system('cp /home/pi/Project/ASRS3/server/testing/asrs_log.pdf {}'.format(removable_device))
-        logger.info("File successfully converted and copied to connected device")
-        return(True, bytes("OK","UTF-8"))
+        logger.info("File successfully converted and copied to {}".format(removable_device))
+        return(True, bytes(removable_device,"UTF-8"))
     except:
         logger.info("Device not detected...Copying files failed.")
         return(False, bytes("-1","UTF-8"))
+
+
+def send_pdf_report():
+    """
+    Method to send pdf report b/w the given dates to the external device.
+    """
+    date1 = request.args.get('date1')
+    date2 = request.args.get('date2')
+    try:
+        removable_device = get_device("")
+        logger.info("Creating file - asrs_report.pdf")
+        asrs.db.create_report(date1, date2)
+        os.system('cp /home/pi/Project/ASRS3/server/asrs_report.pdf {}'.format(removable_device))
+        logger.info("File successfully copied to {}".format(removable_device))
+        return(True, bytes(removable_device, "UTF-8"))
+    except:
+        logger.error("Invalid Dates provided - {} & {}".format(date1, date2))
+        return(False, bytes("-1", "UTF-8"))
 
 
 def set_time():
@@ -453,6 +502,33 @@ def get_ocr_info():
         return(False, bytes("-1", "UTF-8"))
 
 
+def save_mobile_number():
+    """
+    Method to save mobile number in records.
+    """
+    try:
+        uid = request.args.get('uid')
+        mobile = request.args.get('mobile')
+        asrs.db.insert_mobile_to_records(uid, mobile)
+        return(True, bytes("True", "UTF-8"))
+    except:
+        logger.info("Invalid UID/Mobile number provided...")
+        return(False, bytes("-1", "UTF-8"))
+
+
+def eject_by_mobile():
+    """
+    Method to eject by mobile number.
+    """
+    mob = request.args.get('mobile')
+    try:
+        content = asrs.db.eject_by_mobile_number(mob)
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.error("Invalid Mobile Number provided - {}".format(mob))
+        return(False, bytes("-1", "UTF-8"))
+
+
 def list_slot_from_name():
     """
     Method to list users by name.
@@ -463,6 +539,18 @@ def list_slot_from_name():
         return(True, bytes(content, "UTF-8"))
     except:
         logger.error("Invalid Name provided - {}".format(name))
+        return(False, bytes("-1", "UTF-8"))
+
+def list_slot_from_mobile():
+    """
+    Method to list users by name.
+    """
+    mob = request.args.get('mobile')
+    try:
+        content = asrs.list_all_users_by_mobile(mob)
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.error("Invalid Mobile Number provided - {}".format(mob))
         return(False, bytes("-1", "UTF-8"))
 
 
@@ -534,6 +622,15 @@ def get_short_list_between_dates():
     except:
         logger.error("Invalid Dates provided - {} & {}".format(date1, date2))
         return(False, bytes("-1", "UTF-8"))
+
+
+def confirm_storage_with_data(print):
+    """
+    Method to confirm storage with print value and ocr_data.
+    """
+    data = request.args.get('data')
+    content = asrs.confirm_storage(print, data)
+    return(True, bytes(content, "UTF-8"))
 
 
 def get_count():
