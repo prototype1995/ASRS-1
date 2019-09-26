@@ -376,9 +376,10 @@ class ASRSDataBase:
                 key_list = {}
             else:
                 date_in = self.__c.execute('SELECT datetime_in FROM records WHERE uid = ?', (UID,)).fetchone()[0]
+                name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (UID,)).fetchone()[0]
                 formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
-                date_out = self.check_date_in_current(date_in)
-                key_list[i[0]] = formatted_date_in+";"+date_out
+#                date_out = self.check_date_in_current(date_in)
+                key_list[i[0]] = name+';'+formatted_date_in
         return key_list
 
 

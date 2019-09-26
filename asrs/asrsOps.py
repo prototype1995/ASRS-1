@@ -65,8 +65,8 @@ cardTray_pitch = config.getfloat('SLOTS', 'cardTray_pitch')
 
 logger.info("Intial Homing axes...")
 
-m2.go_home(delay=0.0001)
-m1.go_home(delay=0.0001)
+#m2.go_home(delay=0.0001)
+#m1.go_home(delay=0.0001)
 
 logger.info("Initial Homing axes complete.")
 
