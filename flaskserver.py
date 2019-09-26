@@ -63,13 +63,13 @@ responses = { 'INIT_STORE'   : {
                          'content-type': 'application/json'
                         },
          'CONFIRM_STORE_NOPRINT': {
-                         'cmd': 'confirm_storage_with_data(print=False)',
+                         'cmd': 'confirm_storage_noPrint_with_data()',
                          'response-good': 200,
                          'response-bad': 406,
-                         'content-type': 'application/json'
+                         'content-type': 'text/plain'
                        },
          'CONFIRM_STORE_PRINT':{
-                        'cmd':'confirm_storage_with_data(print=True)',
+                        'cmd':'confirm_storage_print_with_data()',
                         'response-good': 200,
                         'response-bad': 406,
                         'content-type': 'text/plain'
@@ -507,20 +507,20 @@ def get_ocr_info():
     """
     Method to insert ocr info into ocr_table.
     """
-    try:
-        uid = request.args.get('uid')
-        name = request.args.get('name')
-        dob = request.args.get('dob')
-        id = request.args.get('id')
-        company = request.args.get('company')
-        validity = request.args.get('validity')
-        o = (uid, name, dob, id, company, validity)
-        asrs.db.insert_to_ocr_table(o)
-        logger.info("OCR values inserted...")
-        return(True, bytes("True", "UTF-8"))
-    except:
-        logger.info("OCR value insertion failed...")
-        return(False, bytes("-1", "UTF-8"))
+#    try:
+    uid = request.args.get('uid')
+    name = request.args.get('name')
+    dob = request.args.get('dob')
+    id = request.args.get('id')
+    company = request.args.get('company')
+    validity = request.args.get('validity')
+    o = (uid, name, dob, id, company, validity)
+    asrs.db.insert_to_ocr_table(o)
+    logger.info("OCR values inserted...")
+    return(True, bytes("True", "UTF-8"))
+#    except:
+#        logger.info("OCR value insertion failed...")
+#        return(False, bytes("-1", "UTF-8"))
 
 
 def save_mobile_number():
@@ -645,12 +645,21 @@ def get_short_list_between_dates():
         return(False, bytes("-1", "UTF-8"))
 
 
-def confirm_storage_with_data(print):
+def confirm_storage_print_with_data():
     """
     Method to confirm storage with print value and ocr_data.
     """
     data = request.args.get('data')
-    content = asrs.confirm_storage(print, data)
+    content = asrs.confirm_storage(data, prints="True")
+    return(True, bytes(content, "UTF-8"))
+
+
+def confirm_storage_noPrint_with_data():
+    """
+    Method to confirm storage with print value and ocr_data.
+    """
+    data = request.args.get('data')
+    content = asrs.confirm_storage(data, prints="False")
     return(True, bytes(content, "UTF-8"))
 
 

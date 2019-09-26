@@ -149,7 +149,7 @@ def init_image_proc():
     return(True, bytes(content, "UTF-8"))
 
 
-def confirm_storage(print=False, data=""):
+def confirm_storage(data = " ", prints="False"):
     logger.debug("confirm_storage() called...")
     s1.fire_solenoid(3)
     logger.info("Updating slot object.")
@@ -158,19 +158,18 @@ def confirm_storage(print=False, data=""):
     slot.ocr_info = data
     db.update_current(slot)
     db.insert_to_records(slot)
-    if print:
+    if prints=="True":
         qr.print_qr_code(slot.uid)
-        cmd = "confirm_storage(print=True)"
+        cmd = "confirm_storage_print_with_data()"
     else:
-        cmd = "confirm_storage(print=False)"
+        cmd = "confirm_storage_noPrint_with_data()"
     m1.go_home(delay=0.00001) # moving back to home position.
     logger.info("Returning to home position... [OBSOLETE]")
     logger.info("Homing complete.")
     content = '''{{ "cmd": "{}",
                     "slot": "{}"}}'''.format(cmd, slot.get_tuple())
     logger.debug(content)
-#    return(True, bytes(content, "UTF-8"))
-    return True
+    return content
 
 
 def confirm_retrieval():
@@ -201,6 +200,7 @@ def purge_all_cards():
 
     logger.info("Deleting database and all images...")
     os.system("rm ASRS_records.db *.jpg user_files/*")
+    os.system("sudo reboot -h now")
 
     content = '''{{"cmd":"{}"
                     "slot": "{}"}}'''.format("purge_all_cards()", slot.get_tuple())
@@ -284,8 +284,8 @@ def led_test():
 
 def go_home():
     logger.info("Homing... [OBSOLETE]")
-    #m1.go_home()
-    #m2.go_home()
+    m1.go_home()
+    m2.go_home()
 
     content = '''{{ "cmd": "{}",
                     "slot": "{}"}}'''.format("go_home()", slot.get_tuple())
