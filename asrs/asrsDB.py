@@ -189,7 +189,7 @@ class ASRSDataBase:
         """
         s.set_datetime_out()
         t = s.get_tuple(to_records=True)
-        self.__c.execute('INSERT INTO records(uid, datetime_in, datetime_out, ocr_info) VALUES (?, ?, ?, ?)', t)
+        self.__c.execute('INSERT INTO records(uid, datetime_in, datetime_out, ocr_info, mobile_num) VALUES (?, ?, ?, ?, ?)', t)
         self.__conn.commit()
 
     def insert_mobile_to_records(self, uid, mob):
@@ -202,6 +202,24 @@ class ASRSDataBase:
                             WHERE uid = ?''',(mob,uid,))
         logger.info("Mobile number added to records.")
         self.__conn.commit()
+
+
+    def check_ocr_substring(self,sub_str):
+        """
+        Method to check a given substring in ocr data.
+        """
+        key_list = {}
+        current_users = self.__c.execute('SELECT uid FROM current WHERE uid != "" ORDER BY datetime_in DESC')
+        for i in current_users.fetchall():
+            ocr_data = self.__c.execute('SELECT ocr_info FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
+            if (ocr_data.find(sub_str) == -1):
+                ocr_data = ocr_data
+            else:
+                name = self.__c.execute('SELECT name FROM ocr_table WHERE uid = ?', (i[0],)).fetchone()[0]
+                date_in = self.__c.execute('SELECT datetime_in FROM records WHERE uid = ?', (i[0],)).fetchone()[0]
+                formatted_date_in = date_in[0:4]+"/"+date_in[4:6]+"/"+date_in[6:8]+" at "+date_in[8:10]+":"+date_in[10:12]
+                key_list[i[0]] = name+';'+formatted_date_in
+        return key_list
 
 
     def insert_to_ocr_table(self, o):

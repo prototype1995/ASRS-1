@@ -383,6 +383,17 @@ def list_all_users_by_mobile(mob):
     return content
 
 
+def list_curr_users_by_text(text):
+    """
+    Method to list users by name.
+    Args : Text
+    Returns : {uid : {name : date_in}}
+    """
+    user_list = db.check_ocr_substring(text)
+    content = json.dumps(user_list)
+    return content
+
+
 def list_all_users_between_dates(date1, date2):
     """
     Method to list users b/w dates.

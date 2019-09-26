@@ -23,6 +23,7 @@ class Slot:
         self.status = t[2]
         self.datetime_in = t[3]
         self.ocr_info = t[4]
+        self.mobile_num = ' '
 
 
     def copy(self, s):

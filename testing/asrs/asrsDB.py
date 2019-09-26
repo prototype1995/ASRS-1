@@ -179,7 +179,7 @@ class ASRSDataBase:
         Args: s object of class Slot
         Returns: None
         """
-        s.set_datetime_out()
+#        s.set_datetime_out()
         t = s.get_tuple(to_records=True)
         self.__c.execute('INSERT INTO records(uid, datetime_in, datetime_out, ocr_info) VALUES (?, ?, ?, ?)', t)
         self.__conn.commit()

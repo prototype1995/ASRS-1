@@ -345,6 +345,12 @@ responses = { 'INIT_STORE'   : {
                    'response-bad': 406,
                    'content-type': 'text/plain'
                    },
+         'CHECKSTRING':{
+                   'cmd': 'check_substring()',
+                   'response-good': 200,
+                   'response-bad': 406,
+                   'content-type': 'application/json'
+                   },
          'UPDATESERVER':{
                    'cmd': 'update_server()',
                    'response-good': 200,
@@ -414,6 +420,21 @@ def update_server():
     except:
         logger.info("Check internet connection.")
         return(False, bytes("-1","UTF-8"))
+
+
+def check_substring():
+    """
+    Method to check if a given text exists in ocr data.
+    """
+    try:
+        text = request.args.get('text')
+        content = asrs.list_curr_users_by_text(text)
+        logger.info("Given string found in ocr data.")
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.info("Given string not found in ocr data.")
+        return(False, bytes("-1","UTF-8"))
+
 
 
 def get_device(removable_device=""):
@@ -546,12 +567,12 @@ def list_slot_from_mobile():
     Method to list users by name.
     """
     mob = request.args.get('mobile')
-#    try:
-    content = asrs.list_all_users_by_mobile(mob)
-    return(True, bytes(content, "UTF-8"))
-#    except:
-#        logger.error("Invalid Mobile Number provided - {}".format(mob))
-#        return(False, bytes("-1", "UTF-8"))
+    try:
+        content = asrs.list_all_users_by_mobile(mob)
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.error("Invalid Mobile Number provided - {}".format(mob))
+        return(False, bytes("-1", "UTF-8"))
 
 
 def sent_ret_date():
@@ -588,12 +609,12 @@ def get_user_list_by_date():
     Method to list users by date.
     """
     date = request.args.get('date')
-#    try:
-    content = asrs.list_all_users_by_date(date)
-    return(True, bytes(content, "UTF-8"))
-#    except:
-#        logger.error("Invalid Date provided - {}".format(date))
-#        return(False, bytes("-1", "UTF-8"))
+    try:
+        content = asrs.list_all_users_by_date(date)
+        return(True, bytes(content, "UTF-8"))
+    except:
+        logger.error("Invalid Date provided - {}".format(date))
+        return(False, bytes("-1", "UTF-8"))
 
 
 def get_users_between_dates():
