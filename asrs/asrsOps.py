@@ -136,9 +136,6 @@ def init_image_proc():
 
     l1.fire_led(state=False) # Turned OFF LED
 
-#    logger.info("Performing OCR [unimplemented]...")
-#    slot.ocr_info = ocr.image_to_text()
-
     logger.info("Generating QRcode.")
     slot.gen_uid()
     qr.generate_qrcode(slot.uid)

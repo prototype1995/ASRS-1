@@ -6,6 +6,11 @@ logger = logging.getLogger(__name__)
 import sqlite3
 import os
 
+# For creating PDF report
+from fpdf import FPDF
+pdf = FPDF(format='A4')
+
+
 class ASRSDataBase:
     """
     The ASRS_records.db will have two TABLES - current & records
@@ -106,7 +111,7 @@ class ASRSDataBase:
         """
         logger.info("Called get_by_uid)_image_filename()")
         t = (uid, )
-        datetime_in = self.__c.execute('SELECT datetime_in FROM current WHERE uid = ?',t).fetchone()
+        datetime_in = self.__c.execute('SELECT datetime_in FROM records WHERE uid = ?',t).fetchone()
         logger.info("Fetched datetime_in: {}".format(datetime_in))
         if not datetime_in:
             logger.error("Value error raised")
@@ -442,7 +447,9 @@ class ASRSDataBase:
         date_val = {}
         first_date = self.__c.execute('SELECT MIN(datetime_in) FROM records').fetchone()[0]
         last_date = self.__c.execute('SELECT MAX(datetime_in) FROM records').fetchone()[0]
-        date_val[first_date] = last_date
+        formatted_first_date = first_date[0:4]+"/"+first_date[4:6]+"/"+first_date[6:8]
+        formatted_last_date = last_date[0:4]+"/"+last_date[4:6]+"/"+last_date[6:8]
+        date_val[formatted_first_date] = formatted_last_date
         return date_val
 
 
@@ -453,15 +460,32 @@ class ASRSDataBase:
         data = self.list_all_users_between_dates(date1, date2)
         formatted_date1 = date1[0:4]+"/"+date1[4:6]+"/"+date1[6:8]
         formatted_date2 = date2[0:4]+"/"+date2[4:6]+"/"+date2[6:8]
-        with open('asrs_report.txt', 'w') as f:
-            f.write('\nFrom : {}  To : {}\n'.format(formatted_date1, formatted_date2))
-            f.write("-------------------------------------------------------------------------------------------\n")
-            f.write("-------------------------------------------------------------------------------------------\n\n")
-            for key, value in data.items():
-                x = value.split(';')
-                f.write('\n\n\n\nTID         : %s\n\nNAME        : %s\nDOB         : %s\nID          : %s\nCOMPANY     : %s\nVALIDITY    : %s\nSTORED DATE : %s  |  RETRIEVED DATE : %s \n\n' % (key, x[0], x[1], x[2], x[3], x[4], x[5], x[6]))
-                f.write("-------------------------------------------------------------------------------------------\n\n")
-
-        os.system('enscript -b "ASRS REPORT" -G -p output.ps asrs_report.txt')
-        os.system('ps2pdf output.ps asrs_report.pdf')
-
+        i = 0
+        pdf.add_page()
+        pdf.set_font("Arial", "B", size=16)
+        pdf.cell(200,10, txt="ASRS REPORT", ln=1, align="C")
+        pdf.cell(500, 5, txt="------------------------------------------------------------------------------------------------------", ln=1)
+        pdf.cell(500, 5, txt="------------------------------------------------------------------------------------------------------", ln=1)
+        for key, value in data.items():
+            i = i+1
+            pdf.set_font("Arial", "B", size=12)
+            pdf.cell(200,10, txt="{}.".format(i), ln=1)
+            x = value.split(';')
+            user_img = "user_files/"+key+".jpeg"
+            pdf.image(user_img, w=30, h=20)
+            pdf.ln(1)
+            img1 = self.get_by_uid_image_filename(key, 1)
+            pdf.image(img1, w=30, h=20)
+            pdf.ln(1)
+            img2 = self.get_by_uid_image_filename(key, 2)
+            pdf.image(img2, w=30, h=20)
+            pdf.set_font("Arial", size=10)
+            pdf.cell(250, 5, txt="TID                      : {}".format(key), ln=1)
+            pdf.cell(250,5, txt="NAME                  : {}".format(x[0]), ln=1)
+            pdf.cell(250,5, txt="DOB                    : {}".format(x[1]), ln=1)
+            pdf.cell(250,5, txt="ID                        : {}".format(x[2]), ln=1)
+            pdf.cell(250,5, txt="COMPANY          : {}".format(x[3]), ln=1)
+            pdf.cell(250,5, txt="VALIDITY            : {}".format(x[4]), ln=1)
+            pdf.cell(250,5, txt="STORED DATE  : {}   |   RETRIEVED DATE : {}".format(x[5], x[6]), ln=1)
+            pdf.cell(500, 5, txt="----------------------------------------------------------------------------------------------------------------------------------------------", ln=1)
+        pdf.output("ASRS_report.pdf")
