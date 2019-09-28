@@ -462,12 +462,23 @@ class ASRSDataBase:
         formatted_date2 = date2[0:4]+"/"+date2[4:6]+"/"+date2[6:8]
         i = 0
         pdf.add_page()
+        pdf.image('logo.png', 10, 8, 17)
+        pdf.set_font('Arial', 'B', 12)
+        pdf.cell(130)
+        pdf.cell(0, 5, "BAS3D", ln=1)
+        pdf.cell(130)
+        pdf.cell(0, 5, "Thirunnakara, Kottayam", ln=1)
+        pdf.cell(130)
+        pdf.cell(0, 5, "Kerala, INDIA", ln=1)
+        pdf.cell(130)
+        pdf.cell(0, 5, "686001", ln=1)
         pdf.set_font("Arial", "B", size=16)
         pdf.cell(200,10, txt="ASRS REPORT", ln=1, align="C")
         pdf.cell(500, 5, txt="------------------------------------------------------------------------------------------------------", ln=1)
-        pdf.cell(500, 5, txt="------------------------------------------------------------------------------------------------------", ln=1)
         pdf.set_font("Arial", "B", size=12)
         pdf.cell(200,10, txt="From - {}    To - {}".format(formatted_date1, formatted_date2), ln=1)
+        pdf.set_font("Arial", "B", size=16)
+        pdf.cell(500, 5, txt="------------------------------------------------------------------------------------------------------", ln=1)
         for key, value in data.items():
             i = i+1
             pdf.set_font("Arial", "B", size=11)
