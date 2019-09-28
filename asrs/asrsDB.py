@@ -466,9 +466,11 @@ class ASRSDataBase:
         pdf.cell(200,10, txt="ASRS REPORT", ln=1, align="C")
         pdf.cell(500, 5, txt="------------------------------------------------------------------------------------------------------", ln=1)
         pdf.cell(500, 5, txt="------------------------------------------------------------------------------------------------------", ln=1)
+        pdf.set_font("Arial", "B", size=12)
+        pdf.cell(200,10, txt="From - {}    To - {}".format(formatted_date1, formatted_date2), ln=1)
         for key, value in data.items():
             i = i+1
-            pdf.set_font("Arial", "B", size=12)
+            pdf.set_font("Arial", "B", size=11)
             pdf.cell(200,10, txt="{}.".format(i), ln=1)
             x = value.split(';')
             user_img = "user_files/"+key+".jpeg"
