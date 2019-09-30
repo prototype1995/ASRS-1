@@ -501,4 +501,4 @@ class ASRSDataBase:
             pdf.cell(250,5, txt="VALIDITY            : {}".format(x[4]), ln=1)
             pdf.cell(250,5, txt="STORED DATE  : {}   |   RETRIEVED DATE : {}".format(x[5], x[6]), ln=1)
             pdf.cell(500, 5, txt="----------------------------------------------------------------------------------------------------------------------------------------------", ln=1)
-        pdf.output("ASRS_report.pdf")
+        pdf.output("report.pdf")

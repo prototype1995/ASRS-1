@@ -1,9 +1,6 @@
 import pyudev
 import psutil
 
-removable_device = ""
-
-
 def fun(dev):
     global removable_device
     context= pyudev.Context()

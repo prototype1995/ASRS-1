@@ -439,14 +439,17 @@ def check_substring():
 
 def get_device(removable_device=""):
     try:
-        context= pyudev.Context()
-        removable = [device for device in context.list_devices(subsystem='block', DEVTYPE='disk') if device.attributes.asstring('removable') == "1"]
-        for device in removable:
-            partitions = [device.device_node for device in context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
-            for p in psutil.disk_partitions():
-                if p.device in partitions:
-                    removable_device = p.mountpoint
-        return removable_device
+#        context= pyudev.Context()
+#        removable = [device for device in context.list_devices(subsystem='block', DEVTYPE='disk') if device.attributes.asstring('removable') == "1"]
+#        for device in removable:
+#            partitions = [device.device_node for device in context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
+#            for p in psutil.disk_partitions():
+#                if p.device in partitions:
+#                    removable_device = p.mountpoint
+#        return removable_device
+        for r, d, i in os.walk('/media/pi/'):
+            break
+        return ("/media/pi/{}/.".format(d[0]))
     except:
         pass
 
@@ -476,9 +479,10 @@ def send_pdf_report():
     date2 = request.args.get('date2')
     try:
         removable_device = get_device("")
-        logger.info("Creating file - ASRS_report.pdf")
+        logger.info("Creating file - report.pdf")
         asrs.db.create_report(date1, date2)
-        os.system('cp /home/pi/Project/ASRS3/server/ASRS_report.pdf {}'.format(removable_device))
+        os.system('cp /home/pi/Project/ASRS3/server/report.pdf {}'.format(removable_device))
+        os.system('sudo rm report.pdf')
         logger.info("File successfully copied to {}".format(removable_device))
         return(True, bytes(removable_device, "UTF-8"))
     except:
@@ -507,20 +511,20 @@ def get_ocr_info():
     """
     Method to insert ocr info into ocr_table.
     """
-#    try:
-    uid = request.args.get('uid')
-    name = request.args.get('name')
-    dob = request.args.get('dob')
-    id = request.args.get('id')
-    company = request.args.get('company')
-    validity = request.args.get('validity')
-    o = (uid, name, dob, id, company, validity)
-    asrs.db.insert_to_ocr_table(o)
-    logger.info("OCR values inserted...")
-    return(True, bytes("True", "UTF-8"))
-#    except:
-#        logger.info("OCR value insertion failed...")
-#        return(False, bytes("-1", "UTF-8"))
+    try:
+        uid = request.args.get('uid')
+        name = request.args.get('name')
+        dob = request.args.get('dob')
+        id = request.args.get('id')
+        company = request.args.get('company')
+        validity = request.args.get('validity')
+        o = (uid, name, dob, id, company, validity)
+        asrs.db.insert_to_ocr_table(o)
+        logger.info("OCR values inserted...")
+        return(True, bytes("True", "UTF-8"))
+    except:
+        logger.info("OCR value insertion failed...")
+        return(False, bytes("-1", "UTF-8"))
 
 
 def save_mobile_number():
