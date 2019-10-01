@@ -479,10 +479,9 @@ def send_pdf_report():
     date2 = request.args.get('date2')
     try:
         removable_device = get_device("")
-        logger.info("Creating file - report.pdf")
+        logger.info("Creating file - ASRS_report.pdf")
         asrs.db.create_report(date1, date2)
-        os.system('cp /home/pi/Project/ASRS3/server/report.pdf {}'.format(removable_device))
-        os.system('sudo rm report.pdf')
+        os.system('cp /home/pi/Project/ASRS3/server/ASRS_report.pdf {}'.format(removable_device))
         logger.info("File successfully copied to {}".format(removable_device))
         return(True, bytes(removable_device, "UTF-8"))
     except:

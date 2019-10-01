@@ -8,7 +8,6 @@ import os
 
 # For creating PDF report
 from fpdf import FPDF
-pdf = FPDF(format='A4')
 
 
 class ASRSDataBase:
@@ -457,6 +456,7 @@ class ASRSDataBase:
         """
         Method to create report for given list.
         """
+        pdf = FPDF(format='A4')
         data = self.list_all_users_between_dates(date1, date2)
         formatted_date1 = date1[0:4]+"/"+date1[4:6]+"/"+date1[6:8]
         formatted_date2 = date2[0:4]+"/"+date2[4:6]+"/"+date2[6:8]
@@ -501,4 +501,4 @@ class ASRSDataBase:
             pdf.cell(250,5, txt="VALIDITY            : {}".format(x[4]), ln=1)
             pdf.cell(250,5, txt="STORED DATE  : {}   |   RETRIEVED DATE : {}".format(x[5], x[6]), ln=1)
             pdf.cell(500, 5, txt="----------------------------------------------------------------------------------------------------------------------------------------------", ln=1)
-        pdf.output("report.pdf")
+        pdf.output("ASRS_report.pdf")
