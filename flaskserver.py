@@ -784,6 +784,7 @@ def pi_shutdown():
     """
     Method to shutdown pi.
     """
+    logger.info("System turned off.")
     os.system("sudo shutdown -h now")
 #    return(True, bytes("OK", "UTF-8"))
 
@@ -792,6 +793,7 @@ def pi_reboot():
     """
     Method to reboot pi.
     """
+    logger.info("System Rebooted.")
     os.system("sudo reboot -h now")
 #    return(True, bytes("OK", "UTF-8"))
 
