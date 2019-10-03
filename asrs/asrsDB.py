@@ -456,6 +456,7 @@ class ASRSDataBase:
         """
         Method to create report for given list.
         """
+        logger.info('create_report() called.')
         pdf = FPDF(format='A4')
         data = self.list_all_users_between_dates(date1, date2)
         formatted_date1 = date1[0:4]+"/"+date1[4:6]+"/"+date1[6:8]
