@@ -34,7 +34,7 @@ jupyter-client==5.2.3
 jupyter-console==5.2.0
 jupyter-core==4.4.0
 looptools==1.2.3
-lxml==4.4.1
+lxml==4.9.1
 MarkupSafe==1.0
 mistune==0.8.3
 nbconvert==5.3.1
