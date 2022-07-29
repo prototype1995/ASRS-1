@@ -36,7 +36,7 @@ jupyter-core==4.4.0
 looptools==1.2.3
 lxml==4.4.1
 MarkupSafe==1.0
-mistune==0.8.3
+mistune==2.0.3
 nbconvert==5.3.1
 nbformat==4.4.0
 networkx==2.3
